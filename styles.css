@@ -145,7 +145,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #8ba446 0%, #6b8e23 40%, #5a7320 100%);
+  background: linear-gradient(135deg, #bebfbc 0%, #bec2b5 40%, #5b5c58 100%);
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }

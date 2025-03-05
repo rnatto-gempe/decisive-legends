@@ -199,6 +199,56 @@
         visibility: hidden;
       }
     }
+
+    /* Estilos para a continuação de jogo */
+    .continue-game-btn {
+      padding: 12px 30px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      z-index: 2;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 1s ease forwards 1.2s;
+      box-shadow: 0 0 15px rgba(76, 175, 80, 0.7);
+      margin-bottom: 15px;
+    }
+
+    .continue-game-btn:hover {
+      background-color: #388E3C;
+      transform: translateY(-5px);
+      box-shadow: 0 0 30px rgba(76, 175, 80, 0.9);
+    }
+
+    /* Ajusta o espaçamento entre botões */
+    #preview-bosses-btn {
+      margin-top: 15px;
+      padding: 10px 25px;
+      background-color: #9C27B0;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      z-index: 2;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 1s ease forwards 1.8s;
+      box-shadow: 0 0 15px rgba(156, 39, 176, 0.7);
+    }
+
+    #preview-bosses-btn:hover {
+      background-color: #7B1FA2;
+      transform: translateY(-5px);
+      box-shadow: 0 0 30px rgba(156, 39, 176, 0.9);
+    }
   </style>
 
 </head>
@@ -571,7 +621,8 @@
     </div>
   </div>
 </div>
-  <script src="game.js"></script>
+  <script type="module" src="game.js"></script>
+  <script type="module" src="constants.js"></script>
 
   <script>
     // Código da tela de título
