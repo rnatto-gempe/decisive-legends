@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Decisive Legends</title>
+
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    /* Estilo da tela de título */
+    #title-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 9999;
+      background-color: #000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    #particles-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .particle {
+      position: absolute;
+      background-color: rgba(100, 181, 246, 0.5);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    #title {
+      font-size: 3.5rem;
+      font-weight: bold;
+      margin-bottom: 2rem;
+      text-align: center;
+      color: #fff;
+      text-shadow: 0 0 20px #2196F3, 0 0 30px #2196F3, 0 0 40px #2196F3;
+      z-index: 2;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 1s ease forwards 0.5s;
+    }
+
+    #subtitle {
+      font-size: 1.5rem;
+      margin-bottom: 3rem;
+      text-align: center;
+      color: #ccc;
+      z-index: 2;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 1s ease forwards 1s;
+    }
+
+    #start-title-btn {
+      padding: 12px 30px;
+      background-color: #2196F3;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      z-index: 2;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 1s ease forwards 1.5s;
+      box-shadow: 0 0 15px rgba(33, 150, 243, 0.7);
+    }
+
+    #start-title-btn:hover {
+      background-color: #1976D2;
+      transform: translateY(-5px);
+      box-shadow: 0 0 30px rgba(33, 150, 243, 0.9);
+    }
+
+    .floating {
+      animation: floating 3s ease-in-out infinite;
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes floating {
+      0% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-15px);
+      }
+
+      100% {
+        transform: translateY(0px);
+      }
+    }
+
+    .magical-circle {
+      position: absolute;
+      border: 2px solid rgba(33, 150, 243, 0.5);
+      border-radius: 50%;
+      z-index: 1;
+      opacity: 0.7;
+      box-shadow: 0 0 15px rgba(33, 150, 243, 0.3);
+      animation: rotate 20s linear infinite;
+    }
+
+    .magical-circle::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 80%;
+      height: 80%;
+      transform: translate(-50%, -50%);
+      border: 1px solid rgba(33, 150, 243, 0.3);
+      border-radius: 50%;
+    }
+
+    .magical-circle::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 60%;
+      height: 60%;
+      transform: translate(-50%, -50%);
+      border: 1px solid rgba(33, 150, 243, 0.2);
+      border-radius: 50%;
+    }
+
+    .rune {
+      position: absolute;
+      color: rgba(33, 150, 243, 0.8);
+      font-size: 24px;
+      font-weight: bold;
+      text-shadow: 0 0 5px #2196F3;
+      transform-origin: center;
+    }
+
+    @keyframes rotate {
+      0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
+
+      100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
+    }
+
+    @keyframes counter-rotate {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(-360deg);
+      }
+    }
+
+    .fade-out {
+      animation: fadeOut 1.5s ease forwards;
+    }
+
+    @keyframes fadeOut {
+      0% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <!-- Tela de título -->
+
+  <div id="title-screen">
+
+    <div id="particles-container"></div>
+
+    <h1 id="title" class="floating">Decisive Legends</h1>
+
+    <p id="subtitle">
+
+      Onde cada turno escreve sua lenda, e cada escolha molda seu destino
+
+    </p>
+
+    <button id="start-title-btn">INICIAR JORNADA</button>
+    <button id="preview-bosses-btn">VER BOSSES</button>
+
+  </div>
+
+  <!-- Conteúdo existente do jogo -->
+
+  <div id="header">
+
+    <div class="stat-group">
+
+      <div>Vida: <span id="health">100</span>/<span id="max-health">100</span></div>
+
+      <div>Mana: <span id="mana">50</span>/<span id="max-mana">100</span></div>
+
+    </div>
+
+    <div class="stat-group">
+
+      <div>Ataque: <span id="attack">10</span></div>
+
+      <div>Defesa: <span id="defense">5</span></div>
+
+    </div>
+
+    <div class="stat-group">
+
+      <div>Roubo de Vida: <span id="lifesteal">0</span>%</div>
+
+      <div>Nível: <span id="level">1</span></div>
+
+    </div>
+
+    <div class="exp-bar-container">
+
+      <div id="experience" class="exp-bar"></div>
+
+    </div>
+
+  </div>
+
+  <div id="game-area">
+
+    <div id="background"></div>
+
+    <div id="scenery"></div>
+
+    <div id="player"></div>
+
+    <div id="enemy"></div>
+
+    <div id="player-slash" class="attack-slash player-slash"></div>
+
+    <div id="enemy-slash" class="attack-slash enemy-slash"></div>
+
+    <div id="ground"></div>
+
+    <div id="effect-container" class="effect-container"></div>
+
+  </div>
+
+  <div id="cards-area">
+
+    <div class="card">
+
+      <div class="card-title">Bem-vindo ao Decisive Legends!</div>
+
+      <div>Clique em "Iniciar Jornada" para começar a sua aventura.</div>
+
+      <div class="card-options">
+
+        <button id="start-game">Iniciar Jornada</button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  
+<!-- Tela de preview dos bosses -->
+<div id="bosses-preview-screen" style="display: none;">
+  <div class="preview-header">
+    <h1>Bestiário de Decisive Legends</h1>
+    <button id="back-to-menu-btn">VOLTAR AO MENU</button>
+  </div>
+  
+  <div class="preview-section">
+    <h2 class="section-title">Chefões Lendários</h2>
+    <div class="bosses-container">
+      <!-- Rei Goblin -->
+      <div class="boss-card">
+        <h2 class="boss-name">Rei Goblin</h2>
+        <div class="boss-preview enemy-layout-Rei-Goblin"></div>
+      </div>
+      
+      <!-- Quimera -->
+      <div class="boss-card">
+        <h2 class="boss-name">Quimera</h2>
+        <div class="boss-preview enemy-layout-Quimera"></div>
+      </div>
+      
+      <!-- Guardião de Pedra -->
+      <div class="boss-card">
+        <h2 class="boss-name">Guardião de Pedra</h2>
+        <div class="boss-preview enemy-layout-Guardião-de-Pedra"></div>
+      </div>
+      
+      <!-- Necromante Kardaros -->
+      <div class="boss-card">
+        <h2 class="boss-name">Necromante Kardaros</h2>
+        <div class="boss-preview enemy-layout-Necromante-Kardaros"></div>
+      </div>
+      
+      <!-- Hidra Venenosa -->
+      <div class="boss-card">
+        <h2 class="boss-name">Hidra Venenosa</h2>
+        <div class="boss-preview enemy-layout-Hidra-Venenosa"></div>
+      </div>
+      
+      <!-- Senhor da Forja -->
+      <div class="boss-card">
+        <h2 class="boss-name">Senhor da Forja</h2>
+        <div class="boss-preview enemy-layout-Senhor-da-Forja"></div>
+      </div>
+      
+      <!-- Banshee da Floresta -->
+      <div class="boss-card">
+        <h2 class="boss-name">Banshee da Floresta</h2>
+        <div class="boss-preview enemy-layout-Banshee-da-Floresta"></div>
+      </div>
+      
+      <!-- Wyrm Antigo -->
+      <div class="boss-card">
+        <h2 class="boss-name">Wyrm Antigo</h2>
+        <div class="boss-preview enemy-layout-Wyrm-Antigo"></div>
+      </div>
+      
+      <!-- Cavaleiro do Abismo -->
+      <div class="boss-card">
+        <h2 class="boss-name">Cavaleiro do Abismo</h2>
+        <div class="boss-preview enemy-layout-Cavaleiro-do-Abismo"></div>
+      </div>
+      
+      <!-- Kraken das Profundezas -->
+      <div class="boss-card">
+        <h2 class="boss-name">Kraken das Profundezas</h2>
+        <div class="boss-preview enemy-layout-Kraken-das-Profundezas"></div>
+      </div>
+      
+      <!-- Titã de Obsidiana -->
+      <div class="boss-card">
+        <h2 class="boss-name">Titã de Obsidiana</h2>
+        <div class="boss-preview enemy-layout-Titã-de-Obsidiana"></div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="preview-section">
+    <h2 class="section-title">Inimigos Básicos</h2>
+    <div class="enemies-container">
+      <!-- Goblin -->
+      <div class="enemy-card">
+        <h3 class="enemy-name">Goblin</h3>
+        <div class="enemy-preview enemy-layout-Goblin"></div>
+      </div>
+      
+      <!-- Lobo -->
+      <div class="enemy-card">
+        <h3 class="enemy-name">Lobo</h3>
+        <div class="enemy-preview enemy-layout-Lobo"></div>
+      </div>
+      
+      <!-- Esqueleto -->
+      <div class="enemy-card">
+        <h3 class="enemy-name">Esqueleto</h3>
+        <div class="enemy-preview enemy-layout-Esqueleto"></div>
+      </div>
+      
+      <!-- Slime -->
+      <div class="enemy-card">
+        <h3 class="enemy-name">Slime</h3>
+        <div class="enemy-preview enemy-layout-Slime"></div>
+      </div>
+      
+      <!-- Rato Gigante -->
+      <div class="enemy-card">
+        <h3 class="enemy-name">Rato Gigante</h3>
+        <div class="enemy-preview enemy-layout-Rato-Gigante"></div>
+      </div>
+      
+      <!-- Morcego Vampiro -->
+      <div class="enemy-card">
+        <h3 class="enemy-name">Morcego Vampiro</h3>
+        <div class="enemy-preview enemy-layout-Morcego-Vampiro"></div>
+      </div>
+      
+      <!-- Aranha Venenosa -->
+      <div class="enemy-card">
+        <h3 class="enemy-name">Aranha Venenosa</h3>
+        <div class="enemy-preview enemy-layout-Aranha-Venenosa"></div>
+      </div>
+      
+      <!-- Kobold -->
+      <div class="enemy-card">
+        <h3 class="enemy-name">Kobold</h3>
+        <div class="enemy-preview enemy-layout-Kobold"></div>
+      </div>
+      
+      <!-- Duende -->
+      <div class="enemy-card">
+        <h3 class="enemy-name">Duende</h3>
+        <div class="enemy-preview enemy-layout-Duende"></div>
+      </div>
+      
+      <!-- Zumbi -->
+      <div class="enemy-card">
+        <h3 class="enemy-name">Zumbi</h3>
+        <div class="enemy-preview enemy-layout-Zumbi"></div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="preview-section">
+    <h2 class="section-title">Inimigos Médios</h2>
+    <div class="enemies-container">
+      <!-- Ogro -->
+      <div class="enemy-card">
+        <h3 class="enemy-name">Ogro</h3>
+        <div class="enemy-preview enemy-layout-Ogro"></div>
+      </div>
+      
+      <!-- Troll -->
+      <div class="enemy-card">
+        <h3 class="enemy-name">Troll</h3>
+        <div class="enemy-preview enemy-layout-Troll"></div>
+      </div>
+      
+      <!-- Guerreiro Esqueleto -->
+      <div class="enemy-card">
+        <h3 class="enemy-name">Guerreiro Esqueleto</h3>
+        <div class="enemy-preview enemy-layout-Guerreiro-Esqueleto"></div>
+      </div>
+      
+      <!-- Elementar de Fogo -->
+      <div class="enemy-card">
+        <h3 class="enemy-name">Elementar de Fogo</h3>
+        <div class="enemy-preview enemy-layout-Elementar-de-Fogo"></div>
+      </div>
+      
+      <!-- Fantasma -->
+      <div class="enemy-card">
+        <h3 class="enemy-name">Fantasma</h3>
+        <div class="enemy-preview enemy-layout-Fantasma"></div>
+      </div>
+      
+      <!-- Golem de Pedra -->
+      <div class="enemy-card">
+        <h3 class="enemy-name">Golem de Pedra</h3>
+        <div class="enemy-preview enemy-layout-Golem-de-Pedra"></div>
+      </div>
+      
+      <!-- Harpia -->
+      <div class="enemy-card">
+        <h3 class="enemy-name">Harpia</h3>
+        <div class="enemy-preview enemy-layout-Harpia"></div>
+      </div>
+      
+      <!-- Homem-Lagarto -->
+      <div class="enemy-card">
+        <h3 class="enemy-name">Homem-Lagarto</h3>
+        <div class="enemy-preview enemy-layout-Homem-Lagarto"></div>
+      </div>
+      
+      <!-- Golem de Gelo -->
+      <div class="enemy-card">
+        <h3 class="enemy-name">Golem de Gelo</h3>
+        <div class="enemy-preview enemy-layout-Golem-de-Gelo"></div>
+      </div>
+      
+      <!-- Druida Corrompido -->
+      <div class="enemy-card">
+        <h3 class="enemy-name">Druida Corrompido</h3>
+        <div class="enemy-preview enemy-layout-Druida-Corrompido"></div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="preview-section">
+    <h2 class="section-title">Inimigos Fortes</h2>
+    <div class="enemies-container">
+      <!-- Minotauro -->
+      <div class="enemy-card">
+        <h3 class="enemy-name">Minotauro</h3>
+        <div class="enemy-preview enemy-layout-Minotauro"></div>
+      </div>
+      
+      <!-- Cavaleiro das Trevas -->
+      <div class="enemy-card">
+        <h3 class="enemy-name">Cavaleiro das Trevas</h3>
+        <div class="enemy-preview enemy-layout-Cavaleiro-das-Trevas"></div>
+      </div>
+      
+      <!-- Gigante -->
+      <div class="enemy-card">
+        <h3 class="enemy-name">Gigante</h3>
+        <div class="enemy-preview enemy-layout-Gigante"></div>
+      </div>
+      
+      <!-- Elementar de Raios -->
+      <div class="enemy-card">
+        <h3 class="enemy-name">Elementar de Raios</h3>
+        <div class="enemy-preview enemy-layout-Elementar-de-Raios"></div>
+      </div>
+      
+      <!-- Hidra -->
+      <div class="enemy-card">
+        <h3 class="enemy-name">Hidra</h3>
+        <div class="enemy-preview enemy-layout-Hidra"></div>
+      </div>
+      
+      <!-- Ciclope -->
+      <div class="enemy-card">
+        <h3 class="enemy-name">Ciclope</h3>
+        <div class="enemy-preview enemy-layout-Ciclope"></div>
+      </div>
+      
+<div class="enemy-card">
+  <h3 class="enemy-name">Construto Arcano</h3>
+  <div class="enemy-preview enemy-layout-Construto-Arcano"></div>
+</div>
+      
+      <!-- Manticora -->
+      <div class="enemy-card">
+        <h3 class="enemy-name">Manticora</h3>
+        <div class="enemy-preview enemy-layout-Manticora"></div>
+      </div>
+      
+      <!-- Lich -->
+      <div class="enemy-card">
+        <h3 class="enemy-name">Lich</h3>
+        <div class="enemy-preview enemy-layout-Lich"></div>
+      </div>
+      
+      <!-- Necromante -->
+      <div class="enemy-card">
+        <h3 class="enemy-name">Necromante</h3>
+        <div class="enemy-preview enemy-layout-Necromante"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  <script src="game.js"></script>
+
+  <script>
+    // Código da tela de título
+    document.addEventListener('DOMContentLoaded', function() {
+      // Criação de partículas
+      const particlesContainer = document.getElementById('particles-container');
+      const numParticles = 150;
+      for (let i = 0; i < numParticles; i++) {
+        createParticle();
+      }
+
+      function createParticle() {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        // Tamanho aleatório
+        const size = Math.random() * 5 + 1;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        // Posição inicial aleatória
+        const posX = Math.random() * window.innerWidth;
+        const posY = Math.random() * window.innerHeight;
+        particle.style.left = `${posX}px`;
+        particle.style.top = `${posY}px`;
+        // Velocidade aleatória
+        const speedX = (Math.random() - 0.5) * 1;
+        const speedY = (Math.random() - 0.5) * 1;
+        // Opacidade aleatória
+        particle.style.opacity = Math.random() * 0.5 + 0.3;
+        particlesContainer.appendChild(particle);
+        // Movimento da partícula
+        let x = posX;
+        let y = posY;
+
+        function moveParticle() {
+          x += speedX;
+          y += speedY;
+          // Verificar limites da tela
+          if (x < 0 || x > window.innerWidth) x = Math.random() * window.innerWidth;
+          if (y < 0 || y > window.innerHeight) y = Math.random() * window.innerHeight;
+          particle.style.left = `${x}px`;
+          particle.style.top = `${y}px`;
+          requestAnimationFrame(moveParticle);
+        }
+        moveParticle();
+      }
+      // Criação de círculos mágicos
+      createMagicalCircles();
+
+      function createMagicalCircles() {
+        const titleScreen = document.getElementById('title-screen');
+        const numCircles = 3;
+        for (let i = 0; i < numCircles; i++) {
+          const circle = document.createElement('div');
+          circle.className = 'magical-circle';
+          // Tamanho do círculo
+          const size = 300 + i * 100;
+          circle.style.width = `${size}px`;
+          circle.style.height = `${size}px`;
+          // Posicionar no centro
+          circle.style.top = '50%';
+          circle.style.left = '50%';
+          // Velocidade de rotação diferente para cada círculo
+          const duration = 20 + i * 10;
+          circle.style.animationDuration = `${duration}s`;
+          // Direção alternada
+          if (i % 2 === 1) {
+            circle.style.animationDirection = 'reverse';
+          }
+          titleScreen.appendChild(circle);
+          // Adicionar runas
+          addRunesToCircle(circle, 8 + i * 2);
+        }
+      }
+
+      function addRunesToCircle(circle, numRunes) {
+        const runes = ['᛫', '᛬', 'ᚠ', 'ᚢ', 'ᚦ', 'ᚨ', 'ᚱ', 'ᚲ', 'ᚷ', 'ᚹ', 'ᚺ', 'ᚾ', 'ᛁ', 'ᛃ', 'ᛇ', 'ᛈ', 'ᛉ', 'ᛊ', 'ᛏ', 'ᛒ', 'ᛖ', 'ᛗ', 'ᛚ', 'ᛜ', 'ᛟ', 'ᛞ'];
+        for (let i = 0; i < numRunes; i++) {
+          const rune = document.createElement('div');
+          rune.className = 'rune';
+          // Texto da runa aleatório
+          rune.textContent = runes[Math.floor(Math.random() * runes.length)];
+          // Posicionar em torno do círculo
+          const angle = (i / numRunes) * 360;
+          const radius = parseInt(circle.style.width) / 2;
+          const x = radius * Math.cos(angle * Math.PI / 180);
+          const y = radius * Math.sin(angle * Math.PI / 180);
+          rune.style.left = `calc(50% + ${x}px)`;
+          rune.style.top = `calc(50% + ${y}px)`;
+          // Animar rotação contrária
+          rune.style.animation = 'counter-rotate 20s linear infinite';
+          circle.appendChild(rune);
+        }
+      }
+      // Botão para iniciar o jogo
+      document.getElementById('start-title-btn').addEventListener('click', function() {
+        const titleScreen = document.getElementById('title-screen');
+        titleScreen.classList.add('fade-out');
+        // Remover completamente após a animação
+        setTimeout(() => {
+          titleScreen.style.display = 'none';
+        }, 1500);
+      });
+    });
+    // Adicionar após o script existente
+    document.addEventListener('DOMContentLoaded', function() {
+      // Botão para ver bosses
+      document.getElementById('preview-bosses-btn').addEventListener('click', function() {
+        document.getElementById('title-screen').style.display = 'none';
+        document.getElementById('bosses-preview-screen').style.display = 'block';
+      });
+      // Botão para voltar ao menu
+      document.getElementById('back-to-menu-btn').addEventListener('click', function() {
+        document.getElementById('bosses-preview-screen').style.display = 'none';
+        document.getElementById('title-screen').style.display = 'flex';
+      });
+    });
+  </script>
+
+</body>
+
+</html>

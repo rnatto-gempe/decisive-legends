@@ -1,0 +1,2859 @@
+/* Estilos Básicos Otimizados */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background-color: #121212;
+  background-image: radial-gradient(circle at center, #1a1a1a 0%, #121212 100%);
+  color: #fff;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 10px;
+  overflow: hidden;
+  position: relative;
+  height: 100vh;
+}
+
+/* Cabeçalho com Estatísticas - Estilo de HUD de jogo */
+#header {
+  background: linear-gradient(to right, rgba(20, 20, 30, 0.9), rgba(40, 40, 60, 0.9));
+  color: white;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  border: 1px solid rgba(100, 181, 246, 0.3);
+}
+
+.stat-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+#header span {
+  font-weight: bold;
+  color: #64b5f6;
+  text-shadow: 0 0 5px rgba(100, 181, 246, 0.5);
+}
+
+/* Barra de Experiência - Estilo mais dinâmico */
+.exp-bar-container {
+  grid-column: 1 / -1;
+  height: 8px;
+  background-color: rgba(30, 30, 40, 0.7);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 5px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(100, 100, 100, 0.2);
+}
+
+.exp-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #ffd700, #ffa000);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+/* Área do Jogo - Visual mais imersivo */
+#game-area {
+  background: linear-gradient(to bottom, #5495c2 0%, #87ceeb 40%, #a6d8f1 100%);
+  height: 40vh;
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  transition: transform 0.05s;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#background {
+  position: absolute;
+  bottom: 20px;
+  width: 200%;
+  height: 60%;
+  background: linear-gradient(to bottom, rgba(134, 206, 235, 0), rgba(134, 206, 235, 0.5));
+}
+
+#ground {
+  height: 34px;
+  background: linear-gradient(to bottom, #8b5a2b, #6b4226);
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.2);
+}
+
+/* Elementos de Cenário Melhorados */
+.tree {
+  position: absolute;
+  bottom: 20px;
+  width: 40px; /* Árvore mais larga */
+  height: 70px; /* Árvore mais alta */
+  z-index: 6;
+}
+
+.tree::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 17px;
+  width: 6px;
+  height: 20px;
+  background: linear-gradient(to right, #5d3a1a, #8b4513, #5d3a1a); /* Tronco com sombreamento */
+  border-radius: 2px;
+}
+
+.tree::after {
+  content: "";
+  position: absolute;
+  bottom: 15px;
+  left: 5px;
+  width: 30px;
+  height: 45px;
+  background-color: transparent;
+  border-radius: 50% 50% 20% 20%;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  background: radial-gradient(ellipse at center, #2e8b57 30%, #228b22 70%, #1a661a 100%);
+  clip-path: polygon(50% 0%, 25% 25%, 15% 50%, 5% 75%, 0% 100%, 100% 100%, 95% 75%, 85% 50%, 75% 25%, 50% 0%);
+}
+
+.mountain {
+  position: absolute;
+  bottom: 20px;
+  z-index: 0;
+  height: 120px;
+  width: 230px;
+  background: transparent;
+  overflow: hidden;
+}
+
+.mountain::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #8ba446 0%, #6b8e23 40%, #5a7320 100%);
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.mountain::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 30%;
+  width: 35%;
+  height: 30%;
+  background: rgba(255, 255, 255, 0.2);
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+.cloud {
+  position: absolute;
+  width: 60px;
+  height: 25px;
+  background-color: white;
+  border-radius: 25px;
+  opacity: 0.9;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+  z-index: 1;
+}
+
+.cloud::before {
+  content: "";
+  position: absolute;
+  top: -15px;
+  left: 10px;
+  width: 30px;
+  height: 30px;
+  background-color: white;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.cloud::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 30px;
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 50%;
+}
+
+/* Personagens - Visual aprimorado */
+#player {
+  width: 40px;
+  height: 40px;
+  background: radial-gradient(circle at 30% 30%, #5ab5ff 10%, #2196f3 60%, #0d6ecc 100%);
+  position: absolute;
+  bottom: 30px;
+  left: 35%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  z-index: 10;
+  box-shadow: 0 0 15px rgba(33, 150, 243, 0.9), inset 0 0 8px rgba(255, 255, 255, 0.5);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+#enemy {
+  width: 40px;
+  height: 40px;
+  background: radial-gradient(circle at 30% 30%, #ff7575 10%, #ff5252 60%, #c50e0e 100%);
+  position: absolute;
+  bottom: 30px;
+  right: 35%;
+  border-radius: 50%;
+  display: none;
+  z-index: 10;
+  box-shadow: 0 0 15px rgba(255, 82, 82, 0.9), inset 0 0 8px rgba(255, 255, 255, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.boss-enemy {
+  width: 60px !important;
+  height: 60px !important;
+  box-shadow: 0 0 25px rgba(255, 82, 82, 1) !important;
+  background: radial-gradient(circle at 30% 30%, #ff9d9d 10%, #ff5252 40%, #c50e0e 100%) !important;
+  border: 3px solid rgba(255, 200, 200, 0.4) !important;
+}
+
+/* Área de Cartões - Estilo mais dinâmico */
+#cards-area {
+  height: 40vh;
+  background: linear-gradient(to bottom, rgba(30, 30, 40, 0.85), rgba(20, 20, 30, 0.95));
+  margin-top: 10px;
+  border-radius: 12px;
+  overflow-y: auto;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  scrollbar-width: thin;
+  scrollbar-color: #64b5f6 #1e1e1e;
+  border: 1px solid rgba(100, 181, 246, 0.3);
+}
+
+#cards-area::-webkit-scrollbar {
+  width: 8px;
+}
+
+#cards-area::-webkit-scrollbar-track {
+  background: #1e1e1e;
+  border-radius: 4px;
+}
+
+#cards-area::-webkit-scrollbar-thumb {
+  background-color: #64b5f6;
+  border-radius: 4px;
+  border: 2px solid #1e1e1e;
+}
+
+.card {
+  background: linear-gradient(135deg, rgba(45, 45, 55, 0.9), rgba(35, 35, 45, 0.9));
+  border-left: 4px solid #64b5f6;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease, opacity 0.3s, transform 0.3s;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3), 0 0 15px rgba(100, 181, 246, 0.3);
+  background: linear-gradient(135deg, rgba(50, 50, 60, 0.9), rgba(40, 40, 50, 0.9));
+}
+
+.boss-card {
+  border-left: 4px solid #ff5252;
+  background: linear-gradient(135deg, rgba(60, 30, 30, 0.9), rgba(40, 20, 20, 0.9));
+}
+
+.boss-card:hover {
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 82, 82, 0.3);
+  background: linear-gradient(135deg, rgba(70, 35, 35, 0.9), rgba(50, 25, 25, 0.9));
+}
+
+.card-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #64b5f6;
+  font-size: 1.1em;
+  text-shadow: 0 0 5px rgba(100, 181, 246, 0.3);
+  letter-spacing: 0.5px;
+}
+
+.boss-card .card-title {
+  color: #ff5252;
+  text-shadow: 0 0 5px rgba(255, 82, 82, 0.3);
+}
+
+.card-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+button {
+  padding: 10px 12px;
+  background: linear-gradient(to bottom, #2a88c5, #1976d2);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s, transform 0.1s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+}
+
+button:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: 0.5s;
+}
+
+button:hover {
+  background: linear-gradient(to bottom, #3596d6, #1e88e5);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+}
+
+button:hover:before {
+  left: 100%;
+}
+
+button:active,
+.button-clicked {
+  transform: translateY(1px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  background: linear-gradient(to bottom, #156cb1, #0d5ca8);
+}
+
+.restart-button {
+  background: linear-gradient(to bottom, #4caf50, #388e3c);
+  margin: 0 auto;
+  display: block;
+  padding: 12px 20px;
+  font-size: 1.1em;
+}
+
+.restart-button:hover {
+  background: linear-gradient(to bottom, #5cb860, #43a047);
+}
+
+/* Indicadores de Efeitos - Visuais mais claros */
+.option-effect {
+  font-size: 0.9em;
+  padding: 3px 8px;
+  border-radius: 4px;
+  margin-left: 5px;
+  font-weight: bold;
+  display: inline-block;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.option-positive {
+  color: #4caf50;
+  text-shadow: 0 0 3px rgba(76, 175, 80, 0.5);
+}
+
+.option-negative {
+  color: #ff5252;
+  text-shadow: 0 0 3px rgba(255, 82, 82, 0.5);
+}
+
+/* Efeitos Visuais - Aprimoramentos */
+.effect-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 15;
+}
+
+.damage {
+  color: #ff5252;
+  position: absolute;
+  font-weight: bold;
+  font-size: 18px;
+  text-shadow: 0 0 5px rgba(255, 0, 0, 0.7), 0 1px 2px rgba(0, 0, 0, 0.9);
+  animation: fadeUp 1s forwards;
+  z-index: 20;
+}
+
+.heal {
+  color: #4caf50;
+  position: absolute;
+  font-weight: bold;
+  font-size: 18px;
+  text-shadow: 0 0 5px rgba(0, 255, 0, 0.7), 0 1px 2px rgba(0, 0, 0, 0.9);
+  animation: fadeUp 1s forwards;
+  z-index: 20;
+}
+
+.exp-gain {
+  color: #ffd700;
+  position: absolute;
+  font-weight: bold;
+  font-size: 16px;
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.7), 0 1px 2px rgba(0, 0, 0, 0.9);
+  animation: fadeUp 1.5s forwards;
+  z-index: 20;
+}
+
+.stat-change {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: bold;
+  font-size: 16px;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.7);
+  animation: fadeUp 1.5s forwards;
+  z-index: 20;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 6px 12px;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.stat-increase {
+  color: #4caf50;
+  text-shadow: 0 0 5px rgba(76, 175, 80, 0.7);
+}
+
+.stat-decrease {
+  color: #ff5252;
+  text-shadow: 0 0 5px rgba(255, 82, 82, 0.7);
+}
+
+.attack-slash {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background-color: transparent;
+  border-radius: 50%;
+  z-index: 15;
+  display: none;
+  opacity: 0;
+}
+
+.player-slash {
+  border-right: 4px solid white;
+  border-bottom: 4px solid white;
+  transform: rotate(-45deg);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+.enemy-slash {
+  border-left: 4px solid white;
+  border-bottom: 4px solid white;
+  transform: rotate(45deg);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+.show-slash {
+  display: block;
+  animation: slash 0.3s ease-out;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 20;
+  box-shadow: 0 0 5px currentColor;
+}
+
+.lifesteal-particle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #9c27b0;
+  border-radius: 50%;
+  z-index: 20;
+  box-shadow: 0 0 8px #9c27b0;
+}
+
+.impact-effect {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background-color: white;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  animation: impact 0.3s ease-out;
+  z-index: 20;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+}
+
+.windup-effect {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-sizing: content-box;
+  transform: translate(-5px, -5px);
+  animation: windup 0.3s ease-in-out;
+  z-index: 19;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.level-up-effect {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 40px;
+  font-weight: bold;
+  color: #ffd700;
+  text-shadow: 0 0 15px #ffa000, 0 0 25px #ff8000;
+  animation: levelUp 2.5s forwards;
+  z-index: 25;
+}
+
+.ground-crack {
+  position: absolute;
+  bottom: 0;
+  height: 0;
+  background-color: #ff5252;
+  box-shadow: 0 0 15px #ff5252;
+  transition: height 0.5s ease-out;
+  z-index: 9;
+  opacity: 0.8;
+}
+
+.boss-charge-effect {
+  position: absolute;
+  border-radius: 50%;
+  box-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
+  z-index: 19;
+  transition: transform 0.1s ease-in-out;
+}
+
+.boss-projectile {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background: radial-gradient(circle at 30% 30%, #ff7575 10%, #ff5252 60%, #c50e0e 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 12px rgba(255, 0, 0, 0.8);
+  z-index: 18;
+}
+
+.boss-fire-breath {
+  position: absolute;
+  height: 40px;
+  width: 0;
+  background: linear-gradient(90deg, #ff5252, #ff9800);
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+  opacity: 0;
+  transition: width 1.5s ease-out, opacity 1.5s;
+  z-index: 18;
+  border-radius: 0 20px 20px 0;
+}
+
+.narrative-flash {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 30;
+  pointer-events: none;
+}
+
+.game-over-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, rgba(20, 20, 20, 0.85), rgba(0, 0, 0, 0.95));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 1s;
+  z-index: 50;
+}
+
+.game-over-text {
+  font-size: 40px;
+  font-weight: bold;
+  color: #ff5252;
+  text-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+  margin-bottom: 30px;
+  letter-spacing: 2px;
+}
+
+.glow-effect {
+  animation: glow 2s;
+}
+
+/* Botão de habilidade - Estilo mais gamer */
+.skill-button {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, rgba(60, 40, 80, 0.8), rgba(30, 20, 40, 0.9));
+  border-radius: 10px;
+  bottom: 10px;
+  left: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  z-index: 20;
+  transition: all 0.2s ease;
+  overflow: hidden;
+  color: #9575cd;
+  user-select: none;
+  border: 1px solid rgba(126, 87, 194, 0.5);
+  text-shadow: 0 0 5px rgba(126, 87, 194, 0.8);
+}
+
+.skill-button:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: 0.5s;
+}
+
+.skill-button:hover {
+  transform: scale(1.1);
+  background: linear-gradient(135deg, rgba(80, 50, 100, 0.9), rgba(40, 30, 50, 0.9));
+  box-shadow: 0 0 20px rgba(126, 87, 194, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+}
+
+.skill-button:hover:before {
+  left: 100%;
+}
+
+.skill-button:active {
+  transform: scale(0.95);
+}
+
+/* Cooldown da skill - Visual mais claro */
+.skill-cooldown {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: -1;
+  transition: height 0.1s linear;
+  border-radius: 0 0 10px 10px;
+}
+
+/* Estados da skill - Efeitos mais visíveis */
+.skill-active {
+  animation: skillActive 0.5s infinite alternate;
+  box-shadow: 0 0 20px #7e57c2, inset 0 0 10px rgba(126, 87, 194, 0.5);
+}
+
+.skill-error {
+  animation: skillError 0.3s;
+}
+
+.skill-ready {
+  animation: skillReady 0.5s;
+}
+
+/* Efeitos visuais da skill - Mais dinâmicos */
+.skill-windup {
+  position: absolute;
+  border-radius: 50%;
+  border: 3px solid #7e57c2;
+  box-sizing: content-box;
+  transform: translate(-5px, -5px);
+  animation: skillWindup 0.5s ease-in-out;
+  z-index: 19;
+  box-shadow: 0 0 15px rgba(126, 87, 194, 0.7);
+}
+
+.skill-wave {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle at center, #9575cd, #7e57c2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  box-shadow: 0 0 20px #7e57c2;
+}
+
+.skill-impact {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  animation: skillImpact 0.3s ease-out;
+  background: radial-gradient(circle at center, rgba(149, 117, 205, 0.7), rgba(126, 87, 194, 0.3));
+  box-shadow: 0 0 30px rgba(126, 87, 194, 0.8);
+}
+
+.skill-activation-message {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  font-weight: bold;
+  text-shadow: 0 0 8px rgba(126, 87, 194, 0.9), 0 2px 4px rgba(0, 0, 0, 0.7);
+  animation: skillMessage 2s forwards;
+  z-index: 25;
+  color: #9575cd;
+  letter-spacing: 1px;
+}
+
+/* Barra de vida do inimigo - Estilo mais visível */
+.enemy-health-bar {
+  position: absolute;
+  width: 100px;
+  height: 8px;
+  background-color: rgba(30, 30, 30, 0.7);
+  border-radius: 4px;
+  overflow: hidden;
+  z-index: 25;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.enemy-health-fill {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(to right, #2e7d32, #4caf50);
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.7);
+  transition: width 0.3s ease;
+}
+
+.enemy-name {
+  position: absolute;
+  top: -30px;
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+  color: white;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.9), 0 1px 2px black;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+/* Animações aprimoradas */
+@keyframes fadeUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(-15px) scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.9);
+  }
+}
+
+@keyframes flash {
+  0%, 100% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+  50% {
+    opacity: 0.7;
+    filter: brightness(1.5);
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-5px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(5px);
+  }
+}
+
+@keyframes heavyShake {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translate(-10px, 5px) rotate(-1deg);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translate(10px, -5px) rotate(1deg);
+  }
+}
+
+@keyframes slash {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(-45deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.5) rotate(-45deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2) rotate(-45deg);
+  }
+}
+
+@keyframes hit {
+  0% {
+    transform: translateX(0);
+    background-color: white;
+    filter: brightness(1.5);
+  }
+  100% {
+    transform: translateX(0);
+    filter: brightness(1);
+  }
+}
+
+@keyframes specialHit {
+  0% {
+    transform: translateX(0);
+    background-color: white;
+    filter: brightness(1.5);
+  }
+  20% {
+    transform: translateX(-10px);
+    background-color: red;
+  }
+  40% {
+    transform: translateX(10px);
+    filter: brightness(0.8);
+  }
+  60% {
+    transform: translateX(-5px);
+  }
+  80% {
+    transform: translateX(5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes impact {
+  0% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(0);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(2.5);
+  }
+}
+
+@keyframes windup {
+  0% {
+    transform: translate(-5px, -5px) scale(1);
+    opacity: 0.8;
+    border-width: 2px;
+  }
+  50% {
+    transform: translate(-5px, -5px) scale(1.2);
+    opacity: 0.6;
+    border-width: 2px;
+  }
+  100% {
+    transform: translate(-5px, -5px) scale(1.8);
+    opacity: 0;
+    border-width: 1px;
+  }
+}
+
+@keyframes levelUp {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+  40% {
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  60% {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+  80% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.8);
+  }
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 10px #ffd700;
+    filter: brightness(1);
+  }
+  50% {
+    box-shadow: 0 0 30px #ffd700;
+    filter: brightness(1.5);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(33, 150, 243, 0.7);
+    filter: brightness(1);
+  }
+}
+
+@keyframes bossEncounter {
+  0% {
+    filter: brightness(1);
+  }
+  20% {
+    filter: brightness(0.3) contrast(1.5);
+  }
+  30% {
+    filter: brightness(1.2) hue-rotate(10deg);
+  }
+  40% {
+    filter: brightness(0.3) contrast(1.5);
+  }
+  50% {
+    filter: brightness(1.2) hue-rotate(-10deg);
+  }
+  70% {
+    filter: brightness(0.7);
+  }
+  100% {
+    filter: brightness(1);
+  }
+}
+
+/* Animações para habilidades */
+@keyframes skillActive {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 10px #7e57c2;
+    filter: brightness(1);
+  }
+  100% {
+    transform: scale(1.1);
+    box-shadow: 0 0 25px #7e57c2;
+    filter: brightness(1.3);
+  }
+}
+
+@keyframes skillError {
+  0%, 100% {
+    background: linear-gradient(135deg, rgba(60, 40, 80, 0.8), rgba(30, 20, 40, 0.9));
+    transform: scale(1);
+  }
+  50% {
+    background: linear-gradient(135deg, rgba(255, 82, 82, 0.8), rgba(200, 40, 40, 0.9));
+    transform: scale(0.9);
+  }
+}
+
+@keyframes skillReady {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+  50% {
+    transform: scale(1.2);
+    box-shadow: 0 0 25px #7e57c2, 0 0 40px rgba(126, 87, 194, 0.5);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+}
+
+@keyframes skillWindup {
+  0% {
+    transform: translate(-5px, -5px) scale(1);
+    opacity: 0.8;
+    border-width: 3px;
+  }
+  100% {
+    transform: translate(-5px, -5px) scale(2.5);
+    opacity: 0;
+    border-width: 1px;
+  }
+}
+
+@keyframes skillImpact {
+  0% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(0);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(3);
+  }
+}
+
+@keyframes skillMessage {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+  80% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+}
+
+
+
+/* BOSSES */
+
+/* Estilos para cada boss específico por nome */
+
+
+/* Estilos para cada boss específico por nome */
+
+/* Rei Goblin */
+.enemy-layout-Rei-Goblin {
+  background: radial-gradient(circle at 30% 30%, #7cb342 10%, #558B2F 50%, #33691e 100%) !important;
+  clip-path: polygon(50% 0%, 80% 10%, 100% 35%, 100% 70%, 80% 90%, 50% 100%, 20% 90%, 0% 70%, 0% 35%, 20% 10%) !important;
+  width: 60px !important;
+  height: 60px !important;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.7) !important;
+  border: 2px solid rgba(255, 255, 255, 0.4) !important;
+  overflow: visible !important;
+  z-index: 15 !important;
+  transition: all 0.3s ease !important;
+}
+
+.enemy-layout-Rei-Goblin::before {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 10px;
+  background-color: #f5f5dc;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  clip-path: polygon(0% 0%, 20% 50%, 0% 100%, 80% 100%, 100% 50%, 80% 0%);
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+  z-index: -1;
+}
+
+/* Quimera */
+.enemy-layout-Quimera {
+  background: radial-gradient(circle at 30% 30%, #ce93d8 10%, #9C27B0 50%, #6a1b9a 100%) !important;
+  clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 85% 85%, 70% 100%, 30% 100%, 15% 85%, 0% 70%, 0% 30%) !important;
+  width: 60px !important;
+  height: 60px !important;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.7) !important;
+  border: 2px solid rgba(255, 255, 255, 0.4) !important;
+  overflow: visible !important;
+  z-index: 15 !important;
+  transition: all 0.3s ease !important;
+}
+
+.enemy-layout-Quimera::before {
+  content: "";
+  position: absolute;
+  width: 40px;
+  height: 8px;
+  background-color: #ff5722;
+  top: 25px;
+  left: 60px;
+  transform: rotate(45deg);
+  border-radius: 4px;
+  filter: blur(2px);
+  opacity: 0.7;
+  animation: fireBreath 2s infinite alternate;
+  z-index: -1;
+}
+
+/* Guardião de Pedra */
+.enemy-layout-Guardião-de-Pedra {
+  background: linear-gradient(135deg, #90a4ae 0%, #607D8B 50%, #455a64 100%) !important;
+  clip-path: polygon(30% 0%, 70% 0%, 90% 20%, 90% 80%, 70% 100%, 30% 100%, 10% 80%, 10% 20%) !important;
+  border-radius: 0 !important;
+  width: 60px !important;
+  height: 60px !important;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.7) !important;
+  border: 2px solid rgba(255, 255, 255, 0.4) !important;
+  overflow: visible !important;
+  z-index: 15 !important;
+  transition: all 0.3s ease !important;
+}
+
+.enemy-layout-Guardião-de-Pedra::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255, 255, 255, 0.1) 5px, rgba(255, 255, 255, 0.1) 10px);
+  opacity: 0.5;
+  z-index: -1;
+}
+
+/* Necromante Kardaros */
+.enemy-layout-Necromante-Kardaros {
+  background: radial-gradient(circle at 30% 30%, #7986cb 10%, #303F9F 50%, #1a237e 100%) !important;
+  clip-path: polygon(50% 0, 65% 15%, 100% 15%, 100% 50%, 85% 85%, 50% 100%, 15% 85%, 0 50%, 0 15%, 35% 15%) !important;
+  width: 60px !important;
+  height: 60px !important;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.7) !important;
+  border: 2px solid rgba(255, 255, 255, 0.4) !important;
+  overflow: visible !important;
+  z-index: 15 !important;
+  transition: all 0.3s ease !important;
+}
+
+.enemy-layout-Necromante-Kardaros::before {
+  content: "";
+  position: absolute;
+  width: 30px;
+  height: 5px;
+  background-color: #7e57c2;
+  top: 45px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 0 10px #7e57c2;
+  animation: pulseLight 1.5s infinite alternate;
+  z-index: -1;
+}
+
+/* Hidra Venenosa */
+.enemy-layout-Hidra-Venenosa {
+  background: radial-gradient(circle at 30% 30%, #64ffda 10%, #00BFA5 50%, #00796b 100%) !important;
+  border-radius: 40% 40% 40% 40% / 60% 60% 40% 40% !important;
+  width: 60px !important;
+  height: 60px !important;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.7) !important;
+  border: 2px solid rgba(255, 255, 255, 0.4) !important;
+  overflow: visible !important;
+  z-index: 15 !important;
+  transition: all 0.3s ease !important;
+}
+
+.enemy-layout-Hidra-Venenosa::before,
+.enemy-layout-Hidra-Venenosa::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle at 30% 30%, #64ffda 10%, #00BFA5 50%, #00796b 100%);
+  border-radius: 50%;
+  top: -5px;
+  z-index: -1;
+}
+
+.enemy-layout-Hidra-Venenosa::before {
+  left: 10px;
+  transform: rotate(-15deg);
+}
+
+.enemy-layout-Hidra-Venenosa::after {
+  right: 10px;
+  transform: rotate(15deg);
+}
+
+/* Senhor da Forja */
+.enemy-layout-Senhor-da-Forja {
+  background: radial-gradient(circle at 30% 30%, #ff7043 10%, #BF360C 50%, #870000 100%) !important;
+  clip-path: polygon(50% 0%, 80% 30%, 100% 50%, 80% 75%, 50% 100%, 20% 75%, 0% 50%, 20% 30%) !important;
+  width: 60px !important;
+  height: 60px !important;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.7) !important;
+  border: 2px solid rgba(255, 255, 255, 0.4) !important;
+  overflow: visible !important;
+  z-index: 15 !important;
+  transition: all 0.3s ease !important;
+}
+
+.enemy-layout-Senhor-da-Forja::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: radial-gradient(circle at center, transparent 50%, rgba(255, 160, 0, 0.4) 100%);
+  animation: flameAura 2s infinite alternate;
+  z-index: -1;
+}
+
+/* Banshee da Floresta */
+.enemy-layout-Banshee-da-Floresta {
+  background: radial-gradient(circle at 30% 30%, rgba(178, 223, 219, 0.8) 10%, rgba(77, 182, 172, 0.8) 50%, rgba(38, 166, 154, 0.8) 100%) !important;
+  border-radius: 45% 45% 45% 45% / 40% 40% 60% 60% !important;
+  opacity: 0.9 !important;
+  box-shadow: 0 0 30px rgba(77, 182, 172, 0.8) !important;
+  width: 60px !important;
+  height: 60px !important;
+  border: 2px solid rgba(255, 255, 255, 0.4) !important;
+  overflow: visible !important;
+  z-index: 15 !important;
+  transition: all 0.3s ease !important;
+}
+
+.enemy-layout-Banshee-da-Floresta::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: repeating-radial-gradient(circle at center, transparent, transparent 15px, rgba(255, 255, 255, 0.1) 15px, rgba(255, 255, 255, 0.1) 20px);
+  border-radius: 45% 45% 45% 45% / 40% 40% 60% 60%;
+  animation: pulseOpacity 3s infinite alternate;
+  z-index: -1;
+}
+
+/* Wyrm Antigo */
+.enemy-layout-Wyrm-Antigo {
+  background: linear-gradient(135deg, #ffd54f 0%, #FFC107 50%, #ff8f00 100%) !important;
+  clip-path: polygon(25% 0%, 75% 0%, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0% 75%, 0% 25%) !important;
+  border: 3px solid rgba(255, 235, 59, 0.6) !important;
+  width: 60px !important;
+  height: 60px !important;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.7) !important;
+  overflow: visible !important;
+  z-index: 15 !important;
+  transition: all 0.3s ease !important;
+}
+
+.enemy-layout-Wyrm-Antigo::before {
+  content: "";
+  position: absolute;
+  width: 70%;
+  height: 70%;
+  top: 15%;
+  left: 15%;
+  clip-path: polygon(25% 0%, 75% 0%, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0% 75%, 0% 25%);
+  background: linear-gradient(135deg, rgba(255, 213, 79, 0.7) 0%, rgba(255, 193, 7, 0.5) 50%, rgba(255, 143, 0, 0.7) 100%);
+  animation: rotateElement 4s linear infinite;
+  z-index: -1;
+}
+
+.enemy-layout-Wyrm-Antigo::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  border-radius: 40%;
+  box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.8);
+  animation: pulseOpacity 2s infinite alternate;
+  z-index: -1;
+}
+
+/* Cavaleiro do Abismo */
+.enemy-layout-Cavaleiro-do-Abismo {
+  background: radial-gradient(circle at 30% 30%, #424242 10%, #212121 50%, #000000 100%) !important;
+  clip-path: polygon(50% 0%, 75% 25%, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0% 75%, 0% 25%, 25% 25%) !important;
+  width: 60px !important;
+  height: 60px !important;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.7) !important;
+  border: 2px solid rgba(255, 255, 255, 0.4) !important;
+  overflow: visible !important;
+  z-index: 15 !important;
+  transition: all 0.3s ease !important;
+}
+
+.enemy-layout-Cavaleiro-do-Abismo::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(66, 66, 66, 0.5) 5px, rgba(66, 66, 66, 0.5) 10px);
+  clip-path: polygon(50% 0%, 75% 25%, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0% 75%, 0% 25%, 25% 25%);
+  animation: shadowPulse 2s infinite alternate;
+  z-index: -1;
+}
+
+/* Kraken das Profundezas */
+.enemy-layout-Kraken-das-Profundezas {
+  background: radial-gradient(circle at 30% 30%, #0288d1 10%, #01579B 50%, #002f6c 100%) !important;
+  border-radius: 45% 45% 45% 45% / 40% 40% 60% 60% !important;
+  width: 60px !important;
+  height: 60px !important;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.7) !important;
+  border: 2px solid rgba(255, 255, 255, 0.4) !important;
+  overflow: visible !important;
+  z-index: 15 !important;
+  transition: all 0.3s ease !important;
+}
+
+.enemy-layout-Kraken-das-Profundezas::before,
+.enemy-layout-Kraken-das-Profundezas::after {
+  content: "";
+  position: absolute;
+  width: 30px;
+  height: 8px;
+  background-color: #0288d1;
+  border-radius: 4px;
+  bottom: 5px;
+  animation: tentacleWave 2s infinite alternate;
+  z-index: -1;
+}
+
+.enemy-layout-Kraken-das-Profundezas::before {
+  left: -20px;
+  animation-delay: 0.5s;
+}
+
+.enemy-layout-Kraken-das-Profundezas::after {
+  right: -20px;
+}
+
+/* Titã de Obsidiana */
+.enemy-layout-Titã-de-Obsidiana {
+  background: linear-gradient(135deg, #4f5b62 0%, #263238 50%, #000a12 100%) !important;
+  clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%) !important;
+  transform: scale(1.2) !important;
+  border: 3px solid rgba(121, 134, 203, 0.6) !important;
+  box-shadow: 0 0 30px rgba(121, 134, 203, 0.8), inset 0 0 15px rgba(121, 134, 203, 0.5) !important;
+  width: 60px !important;
+  height: 60px !important;
+  overflow: visible !important;
+  z-index: 15 !important;
+  transition: all 0.3s ease !important;
+}
+
+.enemy-layout-Titã-de-Obsidiana::before {
+  content: "";
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  top: 10%;
+  left: 10%;
+  background: linear-gradient(135deg, rgba(121, 134, 203, 0.3) 0%, rgba(63, 81, 181, 0.2) 50%, rgba(40, 53, 147, 0.3) 100%);
+  clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%);
+  animation: energyPulse 3s infinite alternate;
+  z-index: -1;
+}
+
+/* Estilos para inimigos básicos */
+
+/* Goblin */
+.enemy-layout-Goblin {
+  background: radial-gradient(circle at 30% 30%, #9CCC65 10%, #8BC34A 50%, #689F38 100%) !important;
+  border-radius: 40% 40% 45% 45% !important;
+  width: 40px !important;
+  height: 40px !important;
+  box-shadow: 0 0 15px rgba(139, 195, 74, 0.6) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  overflow: visible !important;
+}
+
+.enemy-layout-Goblin::before {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 5px;
+  background-color: #33691E;
+  border-radius: 0 0 10px 10px;
+  top: 15px;
+  left: 15px;
+  z-index: 2;
+}
+
+.enemy-layout-Goblin::after {
+  content: "";
+  position: absolute;
+  width: 15px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #33691E;
+  top: -4px;
+  left: 12px;
+  z-index: 1;
+}
+
+/* Lobo */
+.enemy-layout-Lobo {
+  background: radial-gradient(circle at 30% 30%, #A1887F 10%, #795548 50%, #5D4037 100%) !important;
+  border-radius: 40% 40% 40% 40% / 35% 35% 65% 65% !important;
+  width: 40px !important;
+  height: 40px !important;
+  box-shadow: 0 0 15px rgba(121, 85, 72, 0.6) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  overflow: visible !important;
+}
+
+.enemy-layout-Lobo::before {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 15px solid #5D4037;
+  top: -8px;
+  left: 10px;
+  transform: rotate(40deg);
+  z-index: 1;
+}
+
+.enemy-layout-Lobo::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 15px solid #5D4037;
+  top: -8px;
+  right: 10px;
+  transform: rotate(-40deg);
+  z-index: 1;
+}
+
+/* Esqueleto */
+.enemy-layout-Esqueleto {
+  background: radial-gradient(circle at 30% 30%, #E0E0E0 10%, #BDBDBD 50%, #9E9E9E 100%) !important;
+  border-radius: 50% !important;
+  width: 40px !important;
+  height: 40px !important;
+  box-shadow: 0 0 15px rgba(189, 189, 189, 0.6) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  overflow: visible !important;
+}
+
+.enemy-layout-Esqueleto::before {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 15px;
+  background-color: #9E9E9E;
+  border-radius: 10px;
+  top: 15px;
+  left: 8px;
+  background: repeating-linear-gradient(
+    90deg,
+    #E0E0E0,
+    #E0E0E0 3px,
+    #9E9E9E 3px,
+    #9E9E9E 6px
+  );
+  z-index: 2;
+}
+
+/* Slime */
+.enemy-layout-Slime {
+  background: radial-gradient(circle at 30% 30%, #66BB6A 10%, #4CAF50 50%, #388E3C 100%) !important;
+  border-radius: 50% 50% 30% 30% / 60% 60% 40% 40% !important;
+  width: 40px !important;
+  height: 35px !important;
+  box-shadow: 0 0 15px rgba(76, 175, 80, 0.6) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  overflow: visible !important;
+  transform-origin: center bottom;
+  animation: slimePulse 2s infinite alternate;
+}
+
+.enemy-layout-Slime::before {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background-color: #2E7D32;
+  border-radius: 50%;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+}
+
+.enemy-layout-Slime::after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background-color: #2E7D32;
+  border-radius: 50%;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+}
+
+/* Rato Gigante */
+.enemy-layout-Rato-Gigante {
+  background: radial-gradient(circle at 30% 30%, #BDBDBD 10%, #9E9E9E 50%, #757575 100%) !important;
+  border-radius: 60% 40% 40% 60% / 50% 50% 50% 50% !important;
+  width: 40px !important;
+  height: 35px !important;
+  box-shadow: 0 0 15px rgba(158, 158, 158, 0.6) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  overflow: visible !important;
+}
+
+.enemy-layout-Rato-Gigante::before {
+  content: "";
+  position: absolute;
+  width: 15px;
+  height: 2px;
+  background-color: #616161;
+  top: 10px;
+  right: -15px;
+  border-radius: 2px;
+  transform: rotate(-10deg);
+  z-index: 1;
+}
+
+.enemy-layout-Rato-Gigante::after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background-color: #616161;
+  border-radius: 50%;
+  top: 10px;
+  left: 5px;
+  z-index: 2;
+}
+
+/* Morcego Vampiro */
+.enemy-layout-Morcego-Vampiro {
+  background: radial-gradient(circle at 30% 30%, #8D6E63 10%, #5D4037 50%, #4E342E 100%) !important;
+  border-radius: 50% 50% 35% 35% / 55% 55% 45% 45% !important;
+  width: 40px !important;
+  height: 30px !important;
+  box-shadow: 0 0 15px rgba(93, 64, 55, 0.6) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  overflow: visible !important;
+}
+
+.enemy-layout-Morcego-Vampiro::before, 
+.enemy-layout-Morcego-Vampiro::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 10px;
+  background-color: #4E342E;
+  border-radius: 50% 50% 0 0;
+  z-index: -1;
+}
+
+.enemy-layout-Morcego-Vampiro::before {
+  top: 5px;
+  left: -15px;
+  transform: rotate(-30deg);
+}
+
+.enemy-layout-Morcego-Vampiro::after {
+  top: 5px;
+  right: -15px;
+  transform: rotate(30deg);
+}
+
+/* Aranha Venenosa */
+.enemy-layout-Aranha-Venenosa {
+  background: radial-gradient(circle at 30% 30%, #9C27B0 10%, #7B1FA2 50%, #6A1B9A 100%) !important;
+  border-radius: 50% !important;
+  width: 35px !important;
+  height: 35px !important;
+  box-shadow: 0 0 15px rgba(123, 31, 162, 0.6) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  overflow: visible !important;
+}
+
+.enemy-layout-Aranha-Venenosa::before, 
+.enemy-layout-Aranha-Venenosa::after {
+  content: "";
+  position: absolute;
+  width: 30px;
+  height: 2px;
+  background-color: #7B1FA2;
+  z-index: -1;
+}
+
+.enemy-layout-Aranha-Venenosa::before {
+  top: 10px;
+  left: -15px;
+  box-shadow: 0 10px 0 #7B1FA2, 0 20px 0 #7B1FA2;
+  transform: rotate(20deg);
+}
+
+.enemy-layout-Aranha-Venenosa::after {
+  top: 10px;
+  right: -15px;
+  box-shadow: 0 10px 0 #7B1FA2, 0 20px 0 #7B1FA2;
+  transform: rotate(-20deg);
+}
+
+/* Kobold */
+.enemy-layout-Kobold {
+  background: radial-gradient(circle at 30% 30%, #FFA726 10%, #FF9800 50%, #F57C00 100%) !important;
+  border-radius: 40% 40% 50% 50% !important;
+  width: 35px !important;
+  height: 40px !important;
+  box-shadow: 0 0 15px rgba(255, 152, 0, 0.6) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  overflow: visible !important;
+}
+
+.enemy-layout-Kobold::before {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 15px solid #F57C00;
+  top: -10px;
+  left: 10px;
+  transform: rotate(0deg);
+  z-index: 1;
+}
+
+.enemy-layout-Kobold::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 3px;
+  background-color: #E65100;
+  top: 20px;
+  left: 8px;
+  border-radius: 3px;
+  z-index: 2;
+}
+
+/* Duende */
+.enemy-layout-Duende {
+  background: radial-gradient(circle at 30% 30%, #81C784 10%, #66BB6A 50%, #4CAF50 100%) !important;
+  border-radius: 50% 50% 40% 40% / 50% 50% 50% 50% !important;
+  width: 30px !important;
+  height: 35px !important;
+  box-shadow: 0 0 15px rgba(102, 187, 106, 0.6) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  overflow: visible !important;
+}
+
+.enemy-layout-Duende::before {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 12px solid #66BB6A;
+  top: -8px;
+  left: 7px;
+  transform: rotate(0deg);
+  z-index: 1;
+}
+
+.enemy-layout-Duende::after {
+  content: "";
+  position: absolute;
+  width: 15px;
+  height: 5px;
+  background-color: #388E3C;
+  top: 15px;
+  left: 7px;
+  border-radius: 5px;
+  z-index: 2;
+}
+
+/* Zumbi */
+.enemy-layout-Zumbi {
+  background: radial-gradient(circle at 30% 30%, #AED581 10%, #689F38 50%, #33691E 100%) !important;
+  border-radius: 35% 35% 50% 50% / 40% 40% 60% 60% !important;
+  width: 35px !important;
+  height: 40px !important;
+  box-shadow: 0 0 15px rgba(104, 159, 56, 0.6) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  overflow: visible !important;
+}
+
+.enemy-layout-Zumbi::before {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 5px;
+  background-color: #33691E;
+  top: 15px;
+  left: 7px;
+  border-radius: 5px;
+  z-index: 2;
+}
+
+.enemy-layout-Zumbi::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background-color: rgba(255, 0, 0, 0.3);
+  top: 25px;
+  right: 5px;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+/* Estilos para inimigos médios */
+
+/* Ogro */
+.enemy-layout-Ogro {
+  background: radial-gradient(circle at 30% 30%, #558B2F 10%, #33691E 50%, #255D00 100%) !important;
+  border-radius: 35% 35% 50% 50% / 40% 40% 60% 60% !important;
+  width: 45px !important;
+  height: 45px !important;
+  box-shadow: 0 0 15px rgba(51, 105, 30, 0.6) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  overflow: visible !important;
+}
+
+.enemy-layout-Ogro::before {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 8px;
+  background-color: #1B5E20;
+  top: 20px;
+  left: 10px;
+  border-radius: 5px;
+  z-index: 2;
+}
+
+.enemy-layout-Ogro::after {
+  content: "";
+  position: absolute;
+  width: 15px;
+  height: 3px;
+  border-radius: 3px;
+  background-color: #1B5E20;
+  top: 30px;
+  left: 15px;
+  z-index: 2;
+}
+
+/* Troll */
+.enemy-layout-Troll {
+  background: radial-gradient(circle at 30% 30%, #7CB342 10%, #558B2F 50%, #33691E 100%) !important;
+  border-radius: 30% 30% 50% 50% / 35% 35% 65% 65% !important;
+  width: 45px !important;
+  height: 45px !important;
+  box-shadow: 0 0 15px rgba(85, 139, 47, 0.6) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  overflow: visible !important;
+}
+
+.enemy-layout-Troll::before {
+  content: "";
+  position: absolute;
+  width: 5px;
+  height: 10px;
+  background-color: #33691E;
+  top: 15px;
+  left: 12px;
+  border-radius: 5px;
+  box-shadow: 16px 0 0 #33691E;
+  z-index: 2;
+}
+
+.enemy-layout-Troll::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 5px;
+  background-color: #33691E;
+  top: 30px;
+  left: 12px;
+  border-radius: 5px;
+  z-index: 2;
+}
+
+/* Guerreiro Esqueleto */
+.enemy-layout-Guerreiro-Esqueleto {
+  background: radial-gradient(circle at 30% 30%, #9E9E9E 10%, #757575 50%, #616161 100%) !important;
+  border-radius: 35% 35% 50% 50% / 40% 40% 60% 60% !important;
+  width: 40px !important;
+  height: 40px !important;
+  box-shadow: 0 0 15px rgba(117, 117, 117, 0.6) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  overflow: visible !important;
+}
+
+.enemy-layout-Guerreiro-Esqueleto::before {
+  content: "";
+  position: absolute;
+  width: 15px;
+  height: 25px;
+  background: linear-gradient(to bottom, #9E9E9E, #616161);
+  top: -20px;
+  left: 12px;
+  clip-path: polygon(0% 100%, 35% 0%, 65% 0%, 100% 100%);
+  z-index: -1;
+}
+
+.enemy-layout-Guerreiro-Esqueleto::after {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 5px;
+  background-color: #9E9E9E;
+  top: 15px;
+  left: 7px;
+  background: repeating-linear-gradient(
+    90deg,
+    #BDBDBD,
+    #BDBDBD 3px,
+    #616161 3px,
+    #616161 6px
+  );
+  border-radius: 5px;
+  z-index: 2;
+}
+
+/* Elementar de Fogo */
+.enemy-layout-Elementar-de-Fogo {
+  background: radial-gradient(circle at 30% 30%, #FF7043 10%, #FF5722 50%, #E64A19 100%) !important;
+  border-radius: 40% 40% 40% 40% / 40% 40% 60% 60% !important;
+  width: 40px !important;
+  height: 45px !important;
+  box-shadow: 0 0 20px rgba(255, 87, 34, 0.8) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  overflow: visible !important;
+  animation: fireFlicker 1s infinite alternate;
+}
+
+.enemy-layout-Elementar-de-Fogo::before, 
+.enemy-layout-Elementar-de-Fogo::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 20px;
+  background: radial-gradient(circle at center, #FFCCBC, #FF5722);
+  border-radius: 40% 40% 60% 0% / 40% 40% 60% 0%;
+  z-index: -1;
+  animation: fireFlame 1.5s infinite alternate;
+}
+
+.enemy-layout-Elementar-de-Fogo::before {
+  top: -10px;
+  left: 5px;
+  transform: rotate(-15deg);
+}
+
+.enemy-layout-Elementar-de-Fogo::after {
+  top: -10px;
+  right: 5px;
+  transform: rotate(15deg);
+}
+
+/* Fantasma */
+.enemy-layout-Fantasma {
+  background: radial-gradient(circle at 30% 30%, rgba(200, 213, 219, 0.8) 10%, rgba(176, 190, 197, 0.8) 50%, rgba(144, 164, 174, 0.8) 100%) !important;
+  border-radius: 50% 50% 0 0 / 70% 70% 0 0 !important;
+  width: 40px !important;
+  height: 45px !important;
+  box-shadow: 0 0 15px rgba(176, 190, 197, 0.6) !important;
+  border: none !important;
+  overflow: visible !important;
+  opacity: 0.8 !important;
+  animation: floatUpDown 3s infinite alternate;
+}
+
+.enemy-layout-Fantasma::before {
+  content: "";
+  position: absolute;
+  width: 40px;
+  height: 15px;
+  background-color: rgba(176, 190, 197, 0.8);
+  bottom: 0;
+  left: 0;
+  border-radius: 0 0 10px 10px;
+  z-index: -1;
+  clip-path: polygon(0% 0%, 20% 100%, 40% 0%, 60% 100%, 80% 0%, 100% 100%);
+}
+
+.enemy-layout-Fantasma::after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background-color: rgba(69, 90, 100, 0.9);
+  top: 15px;
+  left: 10px;
+  border-radius: 50%;
+  box-shadow: 14px 0 0 rgba(69, 90, 100, 0.9);
+  z-index: 2;
+}
+
+/* Golem de Pedra */
+.enemy-layout-Golem-de-Pedra {
+  background: linear-gradient(135deg, #90A4AE 0%, #607D8B 50%, #455A64 100%) !important;
+  border-radius: 20% 20% 20% 20% / 30% 30% 20% 20% !important;
+  width: 45px !important;
+  height: 45px !important;
+  box-shadow: 0 0 15px rgba(96, 125, 139, 0.6) !important;
+  border: 3px solid rgba(255, 255, 255, 0.2) !important;
+  overflow: visible !important;
+}
+
+.enemy-layout-Golem-de-Pedra::before {
+  content: "";
+  position: absolute;
+  width: 35px;
+  height: 12px;
+  background-color: #455A64;
+  top: 5px;
+  left: 5px;
+  border-radius: 5px;
+  z-index: 2;
+}
+
+.enemy-layout-Golem-de-Pedra::after {
+  content: "";
+  position: absolute;
+  width: 35px;
+  height: 100%;
+  top: 0;
+  left: 5px;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 6px,
+    rgba(176, 190, 197, 0.3) 6px,
+    rgba(176, 190, 197, 0.3) 8px
+  );
+  z-index: 1;
+}
+
+/* Harpia */
+.enemy-layout-Harpia {
+  background: radial-gradient(circle at 30% 30%, #A1887F 10%, #8D6E63 50%, #6D4C41 100%) !important;
+  border-radius: 50% 50% 30% 30% / 60% 60% 40% 40% !important;
+  width: 40px !important;
+  height: 40px !important;
+  box-shadow: 0 0 15px rgba(141, 110, 99, 0.6) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  overflow: visible !important;
+}
+
+.enemy-layout-Harpia::before, 
+.enemy-layout-Harpia::after {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 15px;
+  background-color: #6D4C41;
+  z-index: -1;
+}
+
+.enemy-layout-Harpia::before {
+  top: 5px;
+  left: -20px;
+  transform: rotate(-30deg);
+  border-radius: 50% 20% 30% 10%;
+}
+
+.enemy-layout-Harpia::after {
+  top: 5px;
+  right: -20px;
+  transform: rotate(30deg);
+  border-radius: 20% 50% 10% 30%;
+}
+
+/* Homem-Lagarto */
+.enemy-layout-Homem-Lagarto {
+  background: radial-gradient(circle at 30% 30%, #4CAF50 10%, #2E7D32 50%, #1B5E20 100%) !important;
+  border-radius: 40% 40% 50% 50% / 40% 40% 60% 60% !important;
+  width: 40px !important;
+  height: 45px !important;
+  box-shadow: 0 0 15px rgba(46, 125, 50, 0.6) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  overflow: visible !important;
+}
+
+.enemy-layout-Homem-Lagarto::before {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 5px;
+  background-color: #1B5E20;
+  top: 20px;
+  left: 7px;
+  border-radius: 5px;
+  z-index: 2;
+}
+
+.enemy-layout-Homem-Lagarto::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 10px;
+  background-color: #1B5E20;
+  top: -8px;
+  left: 10px;
+  border-radius: 5px 5px 0 0;
+  z-index: -1;
+}
+
+/* Golem de Gelo */
+.enemy-layout-Golem-de-Gelo {
+  background: radial-gradient(circle at 30% 30%, #E3F2FD 10%, #90CAF9 50%, #42A5F5 100%) !important;
+  border-radius: 20% 20% 20% 20% / 30% 30% 20% 20% !important;
+  width: 45px !important;
+  height: 45px !important;
+  box-shadow: 0 0 15px rgba(144, 202, 249, 0.8) !important;
+  border: 3px solid rgba(255, 255, 255, 0.5) !important;
+  overflow: visible !important;
+  opacity: 0.9 !important;
+}
+
+.enemy-layout-Golem-de-Gelo::before {
+  content: "";
+  position: absolute;
+  width: 35px;
+  height: 12px;
+  background-color: #42A5F5;
+  top: 5px;
+  left: 5px;
+  border-radius: 5px;
+  z-index: 2;
+}
+
+.enemy-layout-Golem-de-Gelo::after {
+  content: "";
+  position: absolute;
+  width: 35px;
+  height: 100%;
+  top: 0;
+  left: 5px;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 8px,
+    rgba(227, 242, 253, 0.5) 8px,
+    rgba(227, 242, 253, 0.5) 12px
+  );
+  z-index: 1;
+}
+
+/* Druida Corrompido */
+.enemy-layout-Druida-Corrompido {
+  background: radial-gradient(circle at 30% 30%, #9E9D24 10%, #827717 50%, #5F6D0E 100%) !important;
+  border-radius: 35% 35% 50% 50% / 40% 40% 60% 60% !important;
+  width: 40px !important;
+  height: 45px !important;
+  box-shadow: 0 0 15px rgba(130, 119, 23, 0.6) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  overflow: visible !important;
+}
+
+.enemy-layout-Druida-Corrompido::before {
+  content: "";
+  position: absolute;
+  width: 35px;
+  height: 8px;
+  background: radial-gradient(circle at center, #9E9D24, #5F6D0E);
+  top: -6px;
+  left: 2px;
+  border-radius: 50% 50% 5px 5px;
+  z-index: -1;
+}
+
+.enemy-layout-Druida-Corrompido::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 5px;
+  background-color: #5F6D0E;
+  top: 20px;
+  left: 10px;
+  border-radius: 5px;
+  z-index: 2;
+}
+
+/* Estilos para inimigos fortes */
+
+/* Minotauro */
+.enemy-layout-Minotauro {
+  background: radial-gradient(circle at 30% 30%, #D84315 10%, #BF360C 50%, #870000 100%) !important;
+  border-radius: 35% 35% 50% 50% / 40% 40% 60% 60% !important;
+  width: 45px !important;
+  height: 50px !important;
+  box-shadow: 0 0 15px rgba(191, 54, 12, 0.7) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  overflow: visible !important;
+}
+
+.enemy-layout-Minotauro::before, 
+.enemy-layout-Minotauro::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 15px;
+  background-color: #870000;
+  top: -10px;
+  border-radius: 5px 5px 0 0;
+  z-index: 1;
+  transform: rotate(20deg);
+}
+
+.enemy-layout-Minotauro::before {
+  left: 10px;
+  transform: rotate(-20deg);
+}
+
+.enemy-layout-Minotauro::after {
+  right: 10px;
+  transform: rotate(20deg);
+}
+
+/* Cavaleiro das Trevas */
+.enemy-layout-Cavaleiro-das-Trevas {
+  background: radial-gradient(circle at 30% 30%, #37474F 10%, #263238 50%, #000A12 100%) !important;
+  border-radius: 30% 30% 50% 50% / 40% 40% 60% 60% !important;
+  width: 45px !important;
+  height: 50px !important;
+  box-shadow: 0 0 15px rgba(38, 50, 56, 0.7) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  overflow: visible !important;
+}
+
+.enemy-layout-Cavaleiro-das-Trevas::before {
+  content: "";
+  position: absolute;
+  width: 30px;
+  height: 10px;
+  background-color: #000A12;
+  top: 0;
+  left: 8px;
+  border-radius: 5px 5px 0 0;
+  z-index: 2;
+}
+
+.enemy-layout-Cavaleiro-das-Trevas::after {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 5px;
+  background-color: #000A12;
+  bottom: 15px;
+  left: 10px;
+  z-index: 2;
+}
+
+/* Gigante */
+.enemy-layout-Gigante {
+  background: radial-gradient(circle at 30% 30%, #8D6E63 10%, #6D4C41 50%, #5D4037 100%) !important;
+  border-radius: 40% 40% 45% 45% / 40% 40% 60% 60% !important;
+  width: 50px !important;
+  height: 55px !important;
+  box-shadow: 0 0 15px rgba(109, 76, 65, 0.7) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  overflow: visible !important;
+}
+
+.enemy-layout-Gigante::before {
+  content: "";
+  position: absolute;
+  width: 30px;
+  height: 8px;
+  background-color: #5D4037;
+  top: 15px;
+  left: 10px;
+  border-radius: 5px;
+  z-index: 2;
+}
+
+.enemy-layout-Gigante::after {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 5px;
+  background-color: #5D4037;
+  top: 30px;
+  left: 12px;
+  border-radius: 5px;
+  z-index: 2;
+}
+
+/* Elementar de Raios */
+.enemy-layout-Elementar-de-Raios {
+  background: radial-gradient(circle at 30% 30%, #FFEE58 10%, #FFC107 50%, #FFA000 100%) !important;
+  border-radius: 45% 45% 45% 45% / 45% 45% 55% 55% !important;
+  width: 45px !important;
+  height: 45px !important;
+  box-shadow: 0 0 20px rgba(255, 193, 7, 0.9) !important;
+  border: 2px solid rgba(255, 255, 255, 0.5) !important;
+  overflow: visible !important;
+  animation: lightningPulse 1s infinite alternate;
+}
+
+.enemy-layout-Elementar-de-Raios::before, 
+.enemy-layout-Elementar-de-Raios::after {
+  content: "";
+  position: absolute;
+  background-color: #FFC107;
+  z-index: 1;
+}
+
+.enemy-layout-Elementar-de-Raios::before {
+  width: 5px;
+  height: 20px;
+  top: -15px;
+  left: 20px;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  background: linear-gradient(to bottom, #FFEE58, #FFC107);
+  animation: lightningFlash 1.5s infinite;
+}
+
+.enemy-layout-Elementar-de-Raios::after {
+  width: 25px;
+  height: 5px;
+  top: 20px;
+  left: 10px;
+  background: linear-gradient(to right, #FFC107, #FFEE58, #FFC107);
+  box-shadow: 0 0 5px #FFF9C4;
+  animation: lightningGlow 0.8s infinite alternate;
+}
+
+/* Hidra */
+.enemy-layout-Hidra {
+  background: radial-gradient(circle at 30% 30%, #26A69A 10%, #00BFA5 50%, #00897B 100%) !important;
+  border-radius: 40% 40% 45% 45% / 45% 45% 55% 55% !important;
+  width: 45px !important;
+  height: 40px !important;
+  box-shadow: 0 0 15px rgba(0, 191, 165, 0.7) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  overflow: visible !important;
+}
+
+.enemy-layout-Hidra::before, 
+.enemy-layout-Hidra::after,
+.enemy-layout-Hidra .head-center {
+  content: "";
+  position: absolute;
+  width: 15px;
+  height: 20px;
+  background: radial-gradient(circle at center, #26A69A, #00897B);
+  border-radius: 40% 40% 30% 30% / 50% 50% 30% 30%;
+  top: -15px;
+  z-index: -1;
+}
+
+.enemy-layout-Hidra::before {
+  left: 5px;
+  transform: rotate(-15deg);
+}
+
+.enemy-layout-Hidra::after {
+  right: 5px;
+  transform: rotate(15deg);
+}
+
+.enemy-layout-Hidra .head-center {
+  left: 15px;
+}
+
+/* Ciclope */
+.enemy-layout-Ciclope {
+  background: radial-gradient(circle at 30% 30%, #8D6E63 10%, #5D4037 50%, #4E342E 100%) !important;
+  border-radius: 40% 40% 45% 45% / 45% 45% 55% 55% !important;
+  width: 50px !important;
+  height: 50px !important;
+  box-shadow: 0 0 15px rgba(93, 64, 55, 0.7) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  overflow: visible !important;
+}
+
+.enemy-layout-Ciclope::before {
+  content: "";
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background: radial-gradient(circle at center, #FFC107, #FF6F00);
+  border-radius: 50%;
+  top: 15px;
+  left: 17px;
+  z-index: 2;
+  box-shadow: 0 0 10px rgba(255, 193, 7, 0.8);
+}
+
+.enemy-layout-Ciclope::after {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 5px;
+  background-color: #4E342E;
+  bottom: 15px;
+  left: 12px;
+  border-radius: 5px;
+  z-index: 2;
+}
+
+/* Quimera */
+.enemy-layout-Quimera {
+  background: radial-gradient(circle at 30% 30%, #AB47BC 10%, #7B1FA2 50%, #6A1B9A 100%) !important;
+  border-radius: 45% 45% 40% 40% / 45% 45% 55% 55% !important;
+  width: 45px !important;
+  height: 45px !important;
+  box-shadow: 0 0 15px rgba(123, 31, 162, 0.7) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  overflow: visible !important;
+}
+
+.enemy-layout-Quimera::before {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 20px;
+  background-color: #6A1B9A;
+  top: -10px;
+  left: 10px;
+  border-radius: 60% 60% 0 0;
+  z-index: -1;
+}
+
+.enemy-layout-Quimera::after {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 8px;
+  background-color: #E91E63;
+  top: 50%;
+  left: 40px;
+  border-radius: 0 5px 5px 0;
+  transform: rotate(15deg);
+  z-index: -1;
+}
+
+/* Manticora */
+.enemy-layout-Manticora {
+  background: radial-gradient(circle at 30% 30%, #EC407A 10%, #C2185B 50%, #880E4F 100%) !important;
+  border-radius: 40% 40% 40% 40% / 40% 40% 60% 60% !important;
+  width: 45px !important;
+  height: 45px !important;
+  box-shadow: 0 0 15px rgba(194, 24, 91, 0.7) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  overflow: visible !important;
+}
+
+.enemy-layout-Manticora::before {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 15px;
+  background-color: #880E4F;
+  top: -8px;
+  left: 10px;
+  border-radius: 10px 10px 0 0;
+  z-index: -1;
+}
+
+.enemy-layout-Manticora::after {
+  content: "";
+  position: absolute;
+  width: 30px;
+  height: 8px;
+  background-color: #C2185B;
+  bottom: -5px;
+  left: 20px;
+  border-radius: 0 5px 5px 0;
+  transform: rotate(25deg);
+  z-index: -1;
+}
+
+/* Lich */
+.enemy-layout-Lich {
+  background: radial-gradient(circle at 30% 30%, #7E57C2 10%, #4527A0 50%, #311B92 100%) !important;
+  border-radius: 35% 35% 45% 45% / 40% 40% 60% 60% !important;
+  width: 45px !important;
+  height: 50px !important;
+  box-shadow: 0 0 15px rgba(69, 39, 160, 0.8) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  overflow: visible !important;
+  animation: lichPulse 2s infinite alternate;
+}
+
+.enemy-layout-Lich::before {
+  content: "";
+  position: absolute;
+  width: 30px;
+  height: 12px;
+  background-color: #311B92;
+  top: 0;
+  left: 7px;
+  border-radius: 50% 50% 0 0;
+  z-index: -1;
+}
+
+.enemy-layout-Lich::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: #B39DDB;
+  top: 15px;
+  left: 19px;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #B39DDB;
+  z-index: 2;
+}
+
+/* Necromante */
+.enemy-layout-Necromante {
+  background: radial-gradient(circle at 30% 30%, #5C6BC0 10%, #303F9F 50%, #1A237E 100%) !important;
+  border-radius: 35% 35% 45% 45% / 40% 40% 60% 60% !important;
+  width: 45px !important;
+  height: 50px !important;
+  box-shadow: 0 0 15px rgba(48, 63, 159, 0.8) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  overflow: visible !important;
+}
+
+.enemy-layout-Necromante::before {
+  content: "";
+  position: absolute;
+  width: 35px;
+  height: 10px;
+  background-color: #1A237E;
+  top: -5px;
+  left: 5px;
+  border-radius: 45% 45% 0 0;
+  z-index: -1;
+}
+
+.enemy-layout-Necromante::after {
+  content: "";
+  position: absolute;
+  width: 5px;
+  height: 20px;
+  background-color: #1A237E;
+  top: -20px;
+  left: 20px;
+  z-index: -1;
+}
+
+/* Animações adicionais para os inimigos */
+@keyframes slimePulse {
+  0% {
+    transform: scaleY(1);
+  }
+  100% {
+    transform: scaleY(0.9);
+  }
+}
+
+@keyframes floatUpDown {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes fireFlicker {
+  0% {
+    box-shadow: 0 0 15px rgba(255, 87, 34, 0.7);
+  }
+  100% {
+    box-shadow: 0 0 25px rgba(255, 87, 34, 0.9);
+  }
+}
+
+@keyframes fireFlame {
+  0% {
+    transform: scale(1) rotate(0);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.1) rotate(5deg);
+    opacity: 1;
+  }
+}
+
+@keyframes lightningPulse {
+  0% {
+    box-shadow: 0 0 15px rgba(255, 193, 7, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 30px rgba(255, 193, 7, 1);
+  }
+}
+
+@keyframes lightningFlash {
+  0%, 100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes lightningGlow {
+  0% {
+    box-shadow: 0 0 5px #FFF9C4;
+  }
+  100% {
+    box-shadow: 0 0 15px #FFF9C4;
+  }
+}
+
+@keyframes lichPulse {
+  0% {
+    box-shadow: 0 0 15px rgba(69, 39, 160, 0.7);
+  }
+  100% {
+    box-shadow: 0 0 25px rgba(69, 39, 160, 0.9), 0 0 35px rgba(183, 157, 219, 0.5);
+  }
+}
+
+/* Animações necessárias */
+@keyframes fireBreath {
+  0% {
+    opacity: 0.5;
+    width: 20px;
+    filter: blur(1px);
+  }
+  100% {
+    opacity: 0.8;
+    width: 40px;
+    filter: blur(3px);
+  }
+}
+
+@keyframes pulseLight {
+  0% {
+    opacity: 0.7;
+    box-shadow: 0 0 5px currentColor;
+  }
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 15px currentColor, 0 0 25px currentColor;
+  }
+}
+
+@keyframes flameAura {
+  0% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes pulseOpacity {
+  0% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes rotateElement {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shadowPulse {
+  0% {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8) inset;
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(70, 70, 70, 0.8) inset;
+  }
+}
+
+@keyframes tentacleWave {
+  0% {
+    transform: rotate(-10deg) translateY(0);
+  }
+  50% {
+    transform: rotate(10deg) translateY(-5px);
+  }
+  100% {
+    transform: rotate(-5deg) translateY(3px);
+  }
+}
+
+@keyframes energyPulse {
+  0% {
+    opacity: 0.3;
+    box-shadow: 0 0 10px rgba(121, 134, 203, 0.5) inset;
+  }
+  100% {
+    opacity: 0.7;
+    box-shadow: 0 0 25px rgba(121, 134, 203, 0.8) inset;
+  }
+}
+
+  #preview-bosses-btn {
+    padding: 12px 30px;
+    background-color: #7e57c2;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    z-index: 2;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 1s ease forwards 2s;
+    box-shadow: 0 0 15px rgba(126, 87, 194, 0.7);
+    margin-top: 20px;
+  }
+  
+  #preview-bosses-btn:hover {
+    background-color: #673ab7;
+    transform: translateY(-5px);
+    box-shadow: 0 0 30px rgba(126, 87, 194, 0.9);
+  }
+  
+  #bosses-preview-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9998;
+    background-color: #121212;
+    background-image: radial-gradient(circle at center, #1a1a1a 0%, #121212 100%);
+    overflow-y: auto;
+    padding: 20px;
+  }
+  
+  .preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 10px 20px;
+    background: linear-gradient(to right, rgba(20, 20, 30, 0.9), rgba(40, 40, 60, 0.9));
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  .preview-header h1 {
+    color: #64b5f6;
+    text-shadow: 0 0 10px rgba(100, 181, 246, 0.5);
+    margin: 0;
+  }
+  
+  #back-to-menu-btn {
+    padding: 10px 20px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(244, 67, 54, 0.5);
+  }
+  
+  #back-to-menu-btn:hover {
+    background-color: #d32f2f;
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(244, 67, 54, 0.7);
+  }
+  
+  .bosses-container, .enemies-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 30px;
+    padding: 60px;
+  }
+  
+  .boss-card, .enemy-card {
+    background: linear-gradient(135deg, rgba(45, 45, 55, 0.9), rgba(35, 35, 45, 0.9));
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    position: relative;
+    border: 1px solid rgba(100, 181, 246, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .boss-card:hover, .enemy-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+  }
+  
+  .boss-name, .enemy-name {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #64b5f6;
+    text-shadow: 0 0 3px rgba(100, 181, 246, 0.3);
+  }
+  
+  .enemy-name {
+    font-size: 12px;
+    color: #81c784;
+    text-shadow: 0 0 3px rgba(129, 199, 132, 0.3);
+  }
+  
+  .boss-preview {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+    position: relative;
+  }
+  
+  .enemy-preview {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 5px;
+    position: relative;
+  }
+
+
+/* Construto Arcano - Novo inimigo forte */
+.enemy-layout-Construto-Arcano {
+  background: radial-gradient(circle at 30% 30%, #00B0FF 10%, #0091EA 50%, #01579B 100%) !important;
+  border-radius: 10% !important;
+  width: 40px !important;
+  height: 40px !important;
+  box-shadow: 0 0 15px rgba(0, 145, 234, 0.7) !important;
+  border: 2px solid rgba(255, 255, 255, 0.5) !important;
+  overflow: visible !important;
+  animation: construtoFloat 3s infinite alternate;
+}
+
+.enemy-layout-Construto-Arcano::before {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  border: 2px solid #00B0FF;
+  top: 10px;
+  left: 10px;
+  border-radius: 50%;
+  z-index: 2;
+  animation: construtoRotate 4s linear infinite;
+}
+
+.enemy-layout-Construto-Arcano::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: #FFFFFF;
+  border-radius: 50%;
+  top: 16px;
+  left: 16px;
+  z-index: 3;
+  box-shadow: 0 0 10px #00B0FF;
+  animation: construtoPulse 2s infinite alternate;
+}
+
+@keyframes construtoFloat {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes construtoRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes construtoPulse {
+  0% {
+    opacity: 0.7;
+    box-shadow: 0 0 5px #00B0FF;
+  }
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 15px #00B0FF, 0 0 20px #40C4FF;
+  }
+}
