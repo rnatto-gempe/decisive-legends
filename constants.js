@@ -2145,13 +2145,111 @@ export const situations = [
 
 export const skills = [
     {
+        id: "mysticStrike",
         name: "Golpe Místico",
         description: "Um ataque poderoso imbuído de energia mágica.",
         manaCost: 20,
-        damageMultiplier: 2.5, // Multiplicador de dano em relação ao ataque normal
-        cooldown: 15000, // 15 segundos em milissegundos
-        icon: "⚡", // Ícone da skill
-        color: "#7E57C2" // Cor roxa para a skill
+        damageMultiplier: 2.5,
+        cooldown: 15000, // 15 segundos
+        icon: "⚡",
+        color: "#7E57C2" // roxo
+    },
+    // {
+    //     id: "fireblast",
+    //     name: "Rajada de Fogo",
+    //     description: "Lança uma explosão flamejante que queima múltiplos inimigos.",
+    //     manaCost: 35,
+    //     damageMultiplier: 3.2,
+    //     cooldown: 25000, // 25 segundos
+    //     icon: "🔥",
+    //     color: "#FF5722" // laranja/vermelho
+    // },
+    // {
+    //     id: "frozenLance",
+    //     name: "Lança Congelante",
+    //     description: "Arremessa uma lança de gelo que diminui a defesa do inimigo.",
+    //     manaCost: 30,
+    //     damageMultiplier: 2.0,
+    //     debuff: { defense: 2, duration: 2 }, // Diminui 2 de defesa por 2 turnos
+    //     cooldown: 20000, // 20 segundos
+    //     icon: "❄️",
+    //     color: "#03A9F4" // azul claro
+    // },
+    // {
+    //     id: "vampiricStrike",
+    //     name: "Ataque Vampírico",
+    //     description: "Absorve parte da vida do inimigo e restaura sua própria saúde.",
+    //     manaCost: 25,
+    //     damageMultiplier: 1.8,
+    //     lifeStealPercent: 50, // Porcentagem do dano convertido em cura
+    //     cooldown: 18000, // 18 segundos
+    //     icon: "🩸",
+    //     color: "#D32F2F" // vermelho escuro
+    // },
+    // {
+    //     id: "thunderStrike",
+    //     name: "Golpe Trovejante",
+    //     description: "Um poderoso ataque elétrico que pode aturdir o inimigo.",
+    //     manaCost: 40,
+    //     damageMultiplier: 3.0,
+    //     stunChance: 0.3, // 30% de chance de aturdir
+    //     cooldown: 30000, // 30 segundos
+    //     icon: "⚡",
+    //     color: "#FFC107" // amarelo/dourado
+    // }
+];
+
+export const skillEvents = [
+    {
+        title: "Mentor Místico",
+        description: "Um velho sábio aparece diante de você, oferecendo ensinar técnicas místicas ancestrais.",
+        options: [
+            {
+                text: "Aprender nova habilidade",
+                effect: { skill: true },
+                description: "O mentor ensina a você uma nova técnica de combate mágica."
+            },
+            {
+                text: "Recusar e seguir caminho",
+                effect: { health: 15 },
+                description: "O mentor admira sua determinação e oferece uma bênção curativa.",
+                effectDisplay: "<span class='option-effect option-positive'>+15 HP</span>"
+            }
+        ]
+    },
+    {
+        title: "Tomo Arcano",
+        description: "Você encontra um antigo livro de magia cujas páginas brilham com conhecimento esquecido.",
+        options: [
+            {
+                text: "Estudar o tomo",
+                effect: { skill: true },
+                description: "Após horas de estudo, você consegue dominar uma nova habilidade mágica."
+            },
+            {
+                text: "Absorver a energia do tomo",
+                effect: { mana: 50 },
+                description: "Você canaliza a energia mágica do livro para suas reservas de mana.",
+                effectDisplay: "<span class='option-effect option-positive'>+50 MANA</span>"
+            }
+        ]
+    },
+    {
+        title: "Altar Elemental",
+        description: "Um altar místico onde os quatro elementos (fogo, água, terra e ar) pulsam em harmonia.",
+        options: [
+            {
+                text: "Comungar com os elementos",
+                effect: { skill: true },
+                description: "Os elementos concedem a você um novo poder baseado em suas afinidades."
+            },
+            {
+                text: "Absorver a energia elemental",
+                effect: { attack: 4, defense: 2 },
+                description: "Você fortalece seu corpo com a energia dos elementos.",
+                effectDisplay: "<span class='option-effect option-positive'>+4 ATK</span> <span class='option-effect option-positive'>+2 DEF</span>"
+            }
+        ]
     }
 ];
 

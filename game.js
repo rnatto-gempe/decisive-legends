@@ -1,4 +1,4 @@
-import { enemies, bosses, situations, bonuses, skills, narrativeEvents } from "./constants.js";
+import { enemies, bosses, situations, bonuses, skills, narrativeEvents, skillEvents } from "./constants.js";
 
 // Estado do jogador - será carregado do localStorage se disponível
 const player = {
@@ -12,7 +12,9 @@ const player = {
     position: 0,
     level: 1,
     experience: 0,
-    nextLevelExp: 100
+    nextLevelExp: 100,
+    unlockedSkills: ["mysticStrike"],
+    activeSkillId: "mysticStrike" // ID da skill ativa atualmente
 };
 
 // Estado do jogo
@@ -27,7 +29,7 @@ let eventCounter = 0;
 
 // Local Storage Functions
 // Salva o progresso do jogador no localStorage
-function saveProgress() {
+function saveProgress () {
     const gameState = {
         player: { ...player },
         killCount,
@@ -35,22 +37,22 @@ function saveProgress() {
         bossEncountered,
         lastSaved: new Date().toISOString()
     };
-    
+
     localStorage.setItem('decisiveLegends_saveData', JSON.stringify(gameState));
     console.log('Progresso salvo!', gameState);
-    
+
     // Mostra notificação de salvamento
     showSaveNotification();
 }
 
 // Mostra uma notificação de salvamento
-function showSaveNotification() {
+function showSaveNotification () {
     const notification = document.createElement('div');
     notification.className = 'save-notification';
     notification.textContent = 'Progresso salvo!';
-    
+
     document.body.appendChild(notification);
-    
+
     setTimeout(() => {
         notification.classList.add('fade-out');
         setTimeout(() => {
@@ -60,21 +62,21 @@ function showSaveNotification() {
 }
 
 // Carrega o progresso do jogador do localStorage
-function loadProgress() {
+function loadProgress () {
     const savedData = localStorage.getItem('decisiveLegends_saveData');
-    
+
     if (savedData) {
         try {
             const gameState = JSON.parse(savedData);
-            
+
             // Restaura dados do player
             Object.assign(player, gameState.player);
-            
+
             // Restaura outros estados do jogo
             killCount = gameState.killCount || 0;
             eventCounter = gameState.eventCounter || 0;
             bossEncountered = gameState.bossEncountered || false;
-            
+
             console.log('Progresso carregado!', gameState);
             return true;
         } catch (error) {
@@ -82,22 +84,22 @@ function loadProgress() {
             return false;
         }
     }
-    
+
     return false;
 }
 
 // Limpa o progresso salvo
-function clearProgress() {
+function clearProgress () {
     localStorage.removeItem('decisiveLegends_saveData');
     console.log('Progresso apagado!');
-    
+
     // Mostra confirmação
     const notification = document.createElement('div');
     notification.className = 'save-notification clear-notification';
     notification.textContent = 'Progresso apagado!';
-    
+
     document.body.appendChild(notification);
-    
+
     setTimeout(() => {
         notification.classList.add('fade-out');
         setTimeout(() => {
@@ -107,7 +109,7 @@ function clearProgress() {
 }
 
 // Verifica se existe save game
-function hasSavedGame() {
+function hasSavedGame () {
     return localStorage.getItem('decisiveLegends_saveData') !== null;
 }
 
@@ -132,7 +134,7 @@ const MAX_PARTICLES = 50;
 // Definição da skill
 
 // Variáveis de controle da skill
-let currentSkill = skills[0]; // Por enquanto, apenas uma skill
+let currentSkill = skills.find(s => s.id === player.activeSkillId); // Skill atual
 let skillReady = true;
 let skillActive = false;
 let lastSkillTime = 0;
@@ -140,6 +142,8 @@ let lastSkillTime = 0;
 // Referências DOM para a UI da skill
 let skillButtonEl;
 let skillCooldownEl;
+let skillMenuEl;
+let skillSwitcherEl;
 
 // Adiciona os estilos CSS para a barra de vida e skill
 function addCustomStyles () {
@@ -437,47 +441,358 @@ function addCustomStyles () {
         transform: translateY(-5px);
         box-shadow: 0 0 30px rgba(76, 175, 80, 0.9);
     }
+
+    /* Estilos para o sistema de skills múltiplas */
+    .skill-button {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background-color: rgba(30, 30, 30, 0.7);
+      border-radius: 10px;
+      bottom: 10px;
+      left: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      z-index: 20;
+      transition: all 0.2s ease;
+      overflow: hidden;
+      color: #7E57C2;
+      user-select: none;
+    }
+    
+    /* ...existing skill button styles... */
+    
+    .skill-menu-button {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background-color: rgba(30, 30, 30, 0.7);
+      border-radius: 5px;
+      bottom: 10px;
+      left: 70px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+      z-index: 20;
+      transition: all 0.2s ease;
+      color: white;
+    }
+    
+    .skill-menu-button:hover {
+      transform: scale(1.1);
+      background-color: rgba(40, 40, 40, 0.8);
+    }
+    
+    .skill-menu {
+      position: absolute;
+      bottom: 70px;
+      left: 10px;
+      background-color: rgba(20, 20, 20, 0.9);
+      border-radius: 10px;
+      padding: 10px;
+      z-index: 30;
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+      max-width: 300px;
+    }
+    
+    .skill-menu.active {
+      display: flex;
+    }
+    
+    .skill-menu-title {
+      font-size: 16px;
+      font-weight: bold;
+      color: white;
+      margin-bottom: 5px;
+      text-align: center;
+    }
+    
+    .skill-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    
+    .skill-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px;
+      border-radius: 5px;
+      background-color: rgba(60, 60, 60, 0.6);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .skill-item:hover {
+      background-color: rgba(80, 80, 80, 0.8);
+      transform: translateX(5px);
+    }
+    
+    .skill-item.active {
+      background-color: rgba(100, 100, 100, 0.8);
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+    }
+    
+    .skill-icon {
+      font-size: 20px;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 5px;
+    }
+    
+    .skill-info {
+      flex: 1;
+    }
+    
+    .skill-name {
+      font-size: 14px;
+      font-weight: bold;
+      color: white;
+    }
+    
+    .skill-description {
+      font-size: 12px;
+      color: #ccc;
+    }
+    
+    .skill-stats {
+      display: flex;
+      gap: 10px;
+      margin-top: 3px;
+    }
+    
+    .skill-stat {
+      font-size: 11px;
+      color: #aaa;
+    }
+    
+    .unlock-skill-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    
+    .unlock-skill-container {
+      background-color: #1E1E1E;
+      border-radius: 10px;
+      padding: 20px;
+      width: 80%;
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      border: 1px solid #333;
+    }
+    
+    .unlock-title {
+      font-size: 24px;
+      color: white;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    
+    .available-skills {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+    }
+    
+    .skill-choice {
+      width: 120px;
+      background-color: #2A2A2A;
+      border-radius: 8px;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .skill-choice:hover {
+      transform: translateY(-5px);
+      background-color: #333;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    .skill-choice-icon {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+    
+    .skill-choice-name {
+      font-size: 14px;
+      font-weight: bold;
+      color: white;
+      text-align: center;
+    }
+    
+    .skill-choice-description {
+      font-size: 12px;
+      color: #AAA;
+      text-align: center;
+      margin-top: 5px;
+    }
+    
+    .skill-tooltip {
+      position: absolute;
+      background-color: rgba(20, 20, 20, 0.9);
+      border-radius: 5px;
+      padding: 8px 12px;
+      font-size: 12px;
+      color: white;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+      z-index: 100;
+      max-width: 200px;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+    }
+    
+    .skill-tooltip.active {
+      opacity: 1;
+    }
+    
+    .skill-acquired {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    
+    .skill-acquired.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    
+    .skill-acquired-container {
+      background: linear-gradient(135deg, #2A2A2A, #1A1A1A);
+      border-radius: 15px;
+      padding: 20px;
+      width: 90%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+      border: 2px solid #333;
+      animation: pulse 2s infinite alternate;
+    }
+    
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+      }
+      100% {
+        box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+      }
+    }
+    
+    .skill-acquired-icon {
+      font-size: 50px;
+      margin: 10px 0;
+    }
+    
+    .skill-acquired-title {
+      font-size: 24px;
+      font-weight: bold;
+      color: white;
+      text-align: center;
+    }
+    
+    .skill-acquired-desc {
+      font-size: 16px;
+      color: #CCC;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    
+    .skill-acquired-button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 10px;
+    }
+    
+    .skill-acquired-button:hover {
+      background-color: #388E3C;
+      transform: scale(1.05);
+    }
+    
+    .skill-equip-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    
+    .skill-equip-message {
+      font-size: 14px;
+      color: #AAA;
+    }
+    
+    /* Animação para nova skill */
+    @keyframes glowPulse {
+      0% {
+        box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+      }
+      50% {
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+      }
+      100% {
+        box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+      }
+    }
+    
+    .new-skill {
+      animation: glowPulse 1.5s infinite;
+    }
   `;
 
     document.head.appendChild(styleEl);
 }
 
-// Adiciona os botões de controle de salvamento
-function addSaveControls() {
-    // Criar container
-    const saveControls = document.createElement('div');
-    saveControls.className = 'save-controls';
-    
-    // Botão de salvar manualmente
-    const saveButton = document.createElement('button');
-    saveButton.className = 'save-button';
-    saveButton.textContent = '💾 Salvar Manualmente';
-    saveButton.addEventListener('click', () => {
-        saveProgress();
-    });
-    
-    // Botão de limpar salvamento
-    const clearButton = document.createElement('button');
-    clearButton.className = 'clear-save-button';
-    clearButton.textContent = '🗑️ Apagar Save';
-    clearButton.addEventListener('click', () => {
-        // Confirmação antes de apagar
-        if (confirm('Tem certeza que deseja apagar todo o progresso salvo? Esta ação não pode ser desfeita.')) {
-            clearProgress();
-            
-            // Se o jogo estiver em andamento, pergunta se quer reiniciar
-            if (gameStarted) {
-                if (confirm('Deseja reiniciar o jogo agora?')) {
-                    resetGame();
-                }
-            }
-        }
-    });
-    
-    saveControls.appendChild(saveButton);
-    saveControls.appendChild(clearButton);
-    gameAreaEl.appendChild(saveControls);
-}
 
 // Atualiza as estatísticas na interface
 function updateStats () {
@@ -526,6 +841,9 @@ function levelUp () {
         title: "Nível Aumentado!",
         description: `Você atingiu o nível ${player.level}! Suas estatísticas aumentaram.`
     });
+
+    // Desbloqueia nova skill
+    showSkillUnlockScreen();
 }
 // Cria o efeito visual de level up
 function createLevelUpEffect () {
@@ -1104,11 +1422,10 @@ function startCombat () {
                 createImpactEffect(playerEl);
                 createBloodParticles(playerEl, 15);
                 playSound("playerDamage");
-
                 // Registra no log
                 addCard({
                     title: "Ataque Inimigo",
-                    description: `O ${enemy.name} causou ${enemyDamage} de dano a você.`
+                    description: `O ${enemy.name} causou ${enemyDamage} de dano.`
                 });
 
                 // Remove classes de animação
@@ -1280,6 +1597,8 @@ function resetGame () {
     player.level = 1;
     player.experience = 0;
     player.nextLevelExp = 100;
+    player.unlockedSkills = ["mysticStrike"]; // IDs das skills desbloqueadas
+    player.activeSkillId = "mysticStrike"; // ID da skill ativa atualmente
 
     // Reseta contadores
     killCount = 0;
@@ -1462,11 +1781,26 @@ function initSkillSystem () {
     addCustomStyles();
 
     // Cria o botão de skill
+    createSkillButton();
+
+    // Cria o botão de troca de skill
+    createSkillMenuButton();
+
+    // Cria o menu de skills
+    createSkillMenu();
+
+    // Inicia o loop de atualização do cooldown
+    updateSkillCooldown();
+}
+
+// Cria botão principal de skill
+function createSkillButton () {
     skillButtonEl = document.createElement("div");
     skillButtonEl.id = "skill-button";
     skillButtonEl.className = "skill-button";
-    skillButtonEl.innerHTML = `${currentSkill.icon}`;
+    skillButtonEl.innerHTML = currentSkill.icon;
     skillButtonEl.title = `${currentSkill.name}: ${currentSkill.description} (Custo: ${currentSkill.manaCost} mana)`;
+    skillButtonEl.style.color = currentSkill.color;
 
     // Cria o indicador de cooldown
     skillCooldownEl = document.createElement("div");
@@ -1479,8 +1813,349 @@ function initSkillSystem () {
     // Adiciona o evento de clique
     skillButtonEl.addEventListener("click", activateSkill);
 
-    // Inicia o loop de atualização do cooldown
-    updateSkillCooldown();
+    // Adiciona eventos para tooltip
+    skillButtonEl.addEventListener("mouseenter", () => {
+        // showSkillTooltip(skillButtonEl, currentSkill);
+    });
+
+    // skillButtonEl.addEventListener("mouseleave", hideTooltip);
+}
+
+// Cria botão para abrir menu de skills
+function createSkillMenuButton () {
+    const button = document.createElement("div");
+    button.className = "skill-menu-button";
+    button.innerHTML = "⚙️";
+    button.title = "Trocar habilidade";
+    button.id = "skill-menu-button";
+
+    button.addEventListener("click", toggleSkillMenu);
+
+    gameAreaEl.appendChild(button);
+    skillSwitcherEl = button;
+}
+
+// Cria o menu de seleção de skills
+function createSkillMenu () {
+    skillMenuEl = document.createElement("div");
+    skillMenuEl.className = "skill-menu";
+    skillMenuEl.id = "skill-menu";
+
+    const title = document.createElement("div");
+    title.className = "skill-menu-title";
+    title.textContent = "Escolha uma habilidade";
+    skillMenuEl.appendChild(title);
+
+    const skillList = document.createElement("div");
+    skillList.className = "skill-list";
+    skillMenuEl.appendChild(skillList);
+
+    gameAreaEl.appendChild(skillMenuEl);
+
+    // Atualiza a lista de skills
+    updateSkillList();
+}
+
+// Atualiza a lista de skills do menu
+function updateSkillList () {
+    const skillList = document.querySelector(".skill-list");
+    if (!skillList) return;
+
+    // Limpa a lista atual
+    skillList.innerHTML = "";
+
+    // Adiciona cada skill disponível
+    player.unlockedSkills.forEach(skillId => {
+        const skill = skills.find(s => s.id === skillId);
+        if (!skill) return;
+
+        const skillItem = document.createElement("div");
+        skillItem.className = `skill-item ${skill.id === player.activeSkillId ? "active" : ""}`;
+        skillItem.dataset.skillId = skill.id;
+
+        // Ícone da skill
+        const icon = document.createElement("div");
+        icon.className = "skill-icon";
+        icon.style.backgroundColor = skill.color;
+        icon.textContent = skill.icon;
+        skillItem.appendChild(icon);
+
+        // Informações da skill
+        const info = document.createElement("div");
+        info.className = "skill-info";
+
+        const name = document.createElement("div");
+        name.className = "skill-name";
+        name.textContent = skill.name;
+        info.appendChild(name);
+
+        const description = document.createElement("div");
+        description.className = "skill-description";
+        description.textContent = skill.description;
+        info.appendChild(description);
+
+        const stats = document.createElement("div");
+        stats.className = "skill-stats";
+
+        const manaCost = document.createElement("div");
+        manaCost.className = "skill-stat";
+        manaCost.textContent = `${skill.manaCost} mana`;
+        stats.appendChild(manaCost);
+
+        const cooldown = document.createElement("div");
+        cooldown.className = "skill-stat";
+        cooldown.textContent = `${skill.cooldown / 1000}s CD`;
+        stats.appendChild(cooldown);
+
+        info.appendChild(stats);
+        skillItem.appendChild(info);
+
+        // Evento de clique para trocar de skill
+        skillItem.addEventListener("click", () => {
+            switchSkill(skill.id);
+            toggleSkillMenu();
+        });
+
+        skillList.appendChild(skillItem);
+    });
+
+    // Se não tem skills desbloqueadas, mostra mensagem
+    if (player.unlockedSkills.length === 0) {
+        const emptyMessage = document.createElement("div");
+        emptyMessage.textContent = "Nenhuma habilidade desbloqueada ainda.";
+        emptyMessage.style.color = "#999";
+        emptyMessage.style.padding = "10px";
+        emptyMessage.style.textAlign = "center";
+        skillList.appendChild(emptyMessage);
+    }
+}
+
+// Abre/fecha o menu de skills
+function toggleSkillMenu () {
+    if (skillMenuEl.classList.contains("active")) {
+        skillMenuEl.classList.remove("active");
+    } else {
+        updateSkillList(); // Atualiza a lista antes de mostrar
+        skillMenuEl.classList.add("active");
+    }
+}
+
+// Troca a skill ativa
+function switchSkill (skillId) {
+    // Verifica se a skill existe e está desbloqueada
+    const skill = skills.find(s => s.id === skillId);
+    if (!skill || !player.unlockedSkills.includes(skillId)) return;
+
+    // Atualiza a skill ativa
+    player.activeSkillId = skillId;
+    currentSkill = skill;
+
+    // Atualiza o botão de skill
+    skillButtonEl.innerHTML = skill.icon;
+    skillButtonEl.style.color = skill.color;
+    skillButtonEl.title = `${skill.name}: ${skill.description} (Custo: ${skill.manaCost} mana)`;
+
+    // Reseta o cooldown
+    skillCooldownEl.style.height = "0";
+    skillReady = true;
+
+    // Adiciona cooldown ao botão
+    if (skillCooldownEl) {
+        skillCooldownEl.style.height = "0";
+    }
+
+    // Salva o progresso
+
+    // Efeito visual
+    skillButtonEl.classList.add("skill-ready");
+    setTimeout(() => {
+        skillButtonEl.classList.remove("skill-ready");
+    }, 500);
+
+    // Efeito sonoro
+    playSound("skillSwitch");
+
+    // Mensagem de troca de skill
+    showSkillSwitchMessage(skill);
+}
+
+// Mostra mensagem temporária de troca de skill
+function showSkillSwitchMessage (skill) {
+    const messageEl = document.createElement("div");
+    messageEl.className = "skill-activation-message";
+    messageEl.innerHTML = `Skill trocada: ${skill.name}`;
+    messageEl.style.color = skill.color;
+
+    effectContainerEl.appendChild(messageEl);
+
+    // Remove após a animação
+    setTimeout(() => {
+        messageEl.remove();
+    }, 2000);
+}
+
+// Mostra a tela de seleção de nova skill
+function showSkillUnlockScreen () {
+    // Pega todas as skills que o jogador não tem ainda
+    const unlockedSkillIds = player.unlockedSkills;
+    const availableSkills = skills.filter(skill => !unlockedSkillIds.includes(skill.id));
+
+    // Se não há novas skills para desbloquear, dá um bônus alternativo
+    if (availableSkills.length === 0) {
+        applyEffects({
+            mana: 50,
+            attack: 3
+        });
+
+        addCard({
+            title: "Conhecimento Avançado",
+            description: "Você já domina todas as habilidades disponíveis. Seu conhecimento aprofundado fortalece seu poder mágico e capacidade de combate."
+        });
+
+        return;
+    }
+
+    // Seleciona 3 skills aleatórias para oferecer (ou menos, se não houver 3 disponíveis)
+    const skillChoices = [];
+    const availablePool = [...availableSkills];
+
+    // Seleciona até 3 skills aleatórias sem repetição
+    const numChoices = Math.min(3, availablePool.length);
+    for (let i = 0; i < numChoices; i++) {
+        const randomIndex = Math.floor(Math.random() * availablePool.length);
+        skillChoices.push(availablePool[randomIndex]);
+        availablePool.splice(randomIndex, 1);
+    }
+
+    // Cria a overlay de seleção
+    const overlay = document.createElement("div");
+    overlay.className = "unlock-skill-overlay";
+
+    const container = document.createElement("div");
+    container.className = "unlock-skill-container";
+
+    const title = document.createElement("div");
+    title.className = "unlock-title";
+    title.textContent = "Escolha uma nova habilidade";
+    container.appendChild(title);
+
+    const skillsContainer = document.createElement("div");
+    skillsContainer.className = "available-skills";
+
+    // Adiciona cada opção de skill
+    skillChoices.forEach(skill => {
+        const skillChoice = document.createElement("div");
+        skillChoice.className = "skill-choice";
+        skillChoice.dataset.skillId = skill.id;
+
+        const icon = document.createElement("div");
+        icon.className = "skill-choice-icon";
+        icon.textContent = skill.icon;
+        icon.style.color = skill.color;
+        skillChoice.appendChild(icon);
+
+        const name = document.createElement("div");
+        name.className = "skill-choice-name";
+        name.textContent = skill.name;
+        skillChoice.appendChild(name);
+
+        const description = document.createElement("div");
+        description.className = "skill-choice-description";
+        description.textContent = skill.description;
+        skillChoice.appendChild(description);
+
+        // Evento de clique para selecionar a skill
+        skillChoice.addEventListener("click", () => {
+            unlockSkill(skill.id);
+            overlay.remove();
+        });
+
+        // Mouse hover para tooltip detalhado
+        skillChoice.addEventListener("mouseenter", (e) => {
+            const tooltipContent = `
+                <strong>${skill.name}</strong><br>
+                ${skill.description}<br><br>
+                <span style="color: #77CCFF;">Custo: ${skill.manaCost} mana</span><br>
+                <span style="color: #FFCC77;">Dano: ${skill.damageMultiplier}x</span><br>
+                <span style="color: #AAAAAA;">Cooldown: ${skill.cooldown / 1000}s</span>
+                ${skill.lifeStealPercent ? `<br><span style="color: #FF7777;">Roubo de vida: ${skill.lifeStealPercent}%</span>` : ""}
+                ${skill.debuff ? `<br><span style="color: #77FF77;">Debuff: -${skill.debuff.defense} DEF por ${skill.debuff.duration} turnos</span>` : ""}
+                ${skill.stunChance ? `<br><span style="color: #FFFF77;">Chance de atordoar: ${skill.stunChance * 100}%</span>` : ""}
+            `;
+            showTooltip(e, tooltipContent);
+        });
+
+        // skillChoice.addEventListener("mouseleave", hideTooltip);
+
+        skillsContainer.appendChild(skillChoice);
+    });
+
+    container.appendChild(skillsContainer);
+    overlay.appendChild(container);
+    document.body.appendChild(overlay);
+}
+
+// Desbloqueia uma nova skill
+function unlockSkill (skillId) {
+    // Adiciona a skill à lista de desbloqueadas do jogador
+    if (!player.unlockedSkills.includes(skillId)) {
+        player.unlockedSkills.push(skillId);
+    }
+
+    // Se for a primeira skill, define como ativa automaticamente
+    if (player.unlockedSkills.length === 1) {
+        player.activeSkillId = skillId;
+        currentSkill = skills.find(s => s.id === skillId);
+    }
+
+    // Salva o progresso
+
+    // Atualiza o menu de skills
+    updateSkillList();
+
+    // Mostra tela de skill adquirida
+    showSkillAcquiredMessage(skillId);
+
+    // Efeito sonoro
+    playSound("skillUnlock");
+}
+
+// Mostra mensagem de skill adquirida
+function showSkillAcquiredMessage (skillId) {
+    const skill = skills.find(s => s.id === skillId);
+    if (!skill) return;
+
+    const overlay = document.createElement("div");
+    overlay.className = "skill-acquired active";
+    const container = document.createElement("div");
+    container.className = "skill-acquired-container";
+
+    const icon = document.createElement("div");
+    icon.className = "skill-acquired-icon";
+    icon.textContent = skill.icon;
+    icon.style.color = skill.color;
+    container.appendChild(icon);
+
+    const title = document.createElement("div");
+    title.className = "skill-acquired-title";
+    title.textContent = `Nova habilidade adquirida: ${skill.name}`;
+    container.appendChild(title);
+
+    const description = document.createElement("div");
+    description.className = "skill-acquired-desc";
+    description.textContent = skill.description;
+    container.appendChild(description);
+
+    const button = document.createElement("button");
+    button.className = "skill-acquired-button";
+    button.textContent = "OK";
+    button.addEventListener("click", () => {
+        overlay.remove();
+    });
+    container.appendChild(button);
+
+    overlay.appendChild(container);
+    document.body.appendChild(overlay);
 }
 
 // Ativa a skill
@@ -2266,7 +2941,7 @@ function startGame () {
 
     // Inicializa o sistema de skills
     initSkillSystem();
-    
+
     // Adiciona controles de salvamento
     // addSaveControls();
 
@@ -2276,9 +2951,6 @@ function startGame () {
         description: "Você parte em busca de aventuras em um mundo misterioso..."
     });
 
-    // Salva o estado inicial do jogo
-    saveProgress();
-
     // Gera a primeira situação
     setTimeout(() => {
         const firstEvent = generateSituation();
@@ -2287,19 +2959,19 @@ function startGame () {
 }
 
 // Função para continuar jogo salvo
-function continueGame() {
+function continueGame () {
     if (loadProgress()) {
         startGame();
-        
+
         // Atualiza a interface com os dados carregados
         updateStats();
-        
+
         // Adiciona um cartão de boas-vindas de volta
         addCard({
             title: "Jornada Continuada",
             description: `Bem-vindo de volta! Você está no nível ${player.level} com ${player.experience} de experiência. Sua jornada continua...`
         });
-        
+
         // Esconder tela de título
         document.getElementById('title-screen').style.display = 'none';
     }
@@ -2314,33 +2986,21 @@ startButton.addEventListener("click", () => {
 updateStats();
 
 // Verifica se existe um jogo salvo ao carregar a página
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Verifica se há um jogo salvo
     if (hasSavedGame()) {
         // Adiciona botão para continuar jogo
         const titleScreen = document.getElementById('title-screen');
-        const buttonsContainer = document.querySelector('#start-title-btn').parentNode;
-        
+
         // Adicionar botão de continuar antes do botão "Ver Bosses"
-        const continueBtn = document.createElement('button');
-        continueBtn.id = 'continue-game-btn';
-        continueBtn.className = 'continue-game-btn';
-        continueBtn.textContent = 'CONTINUAR JORNADA';
-        
-        // Inserir após o botão iniciar
-        buttonsContainer.insertBefore(continueBtn, document.querySelector('#preview-bosses-btn'));
-        
+        const continueBtn = document.getElementById('continue-game-btn');
+        continueBtn.style.display = 'block';
+
+
         // Adicionar evento de clique
-        continueBtn.addEventListener('click', function() {
+        continueBtn.addEventListener('click', function () {
             titleScreen.style.display = 'none';
             continueGame();
         });
-    }
-});
-
-// Adicionar evento para salvar automaticamente quando o usuário sair da página
-window.addEventListener('beforeunload', function() {
-    if (gameStarted) {
-        saveProgress();
     }
 });
