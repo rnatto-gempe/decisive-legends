@@ -26,6 +26,7 @@ let movingForward = false;
 let bossEncountered = false;
 let killCount = 0;
 let eventCounter = 0;
+let defeatedEnemies = []; // Array para armazenar nomes de inimigos derrotados
 
 // Local Storage Functions
 // Salva o progresso do jogador no localStorage
@@ -35,6 +36,7 @@ function saveProgress () {
         killCount,
         eventCounter,
         bossEncountered,
+        defeatedEnemies, // Adiciona lista de inimigos derrotados
         lastSaved: new Date().toISOString()
     };
 
@@ -76,6 +78,7 @@ function loadProgress () {
             killCount = gameState.killCount || 0;
             eventCounter = gameState.eventCounter || 0;
             bossEncountered = gameState.bossEncountered || false;
+            defeatedEnemies = gameState.defeatedEnemies || []; // Carrega a lista de inimigos derrotados
 
             console.log('Progresso carregado!', gameState);
             return true;
@@ -1628,6 +1631,13 @@ function startCombat () {
         if (enemy.health <= 0) {
             // Vitória
             killCount++;
+            
+            // Registra o inimigo derrotado na lista
+            defeatedEnemies.push({
+                name: enemy.name,
+                type: isBoss ? "boss" : "regular",
+                defeatedAt: new Date().toISOString()
+            });
 
             // Efeito de morte do inimigo
             createEnemyDeathEffect(enemyEl);
@@ -1747,6 +1757,9 @@ function resetGame () {
 
     // Limpa a área de cartões
     cardsArea.innerHTML = "";
+
+    // Reseta a lista de inimigos derrotados
+    defeatedEnemies = [];
 
     // Apaga o salvamento
     clearProgress();
@@ -2916,37 +2929,17 @@ document.addEventListener('DOMContentLoaded', function () {
     if (hasSavedGame()) {
         // Adiciona botão para continuar jogo
         const titleScreen = document.getElementById('title-screen');
-
-        // Adicionar botão de continuar antes do botão "Ver Bosses"
         const continueBtn = document.getElementById('continue-game-btn');
-        continueBtn.style.display = 'block';
+        
+        if (titleScreen && continueBtn) {
+            continueBtn.style.display = 'block';
 
-
-        // Adicionar evento de clique
-        continueBtn.addEventListener('click', function () {
-            titleScreen.style.display = 'none';
-            continueGame();
-        });
-    }
-});
-
-// Verifica se existe um jogo salvo ao carregar a página
-document.addEventListener('DOMContentLoaded', function () {
-    // Verifica se há um jogo salvo
-    if (hasSavedGame()) {
-        // Adiciona botão para continuar jogo
-        const titleScreen = document.getElementById('title-screen');
-
-        // Adicionar botão de continuar antes do botão "Ver Bosses"
-        const continueBtn = document.getElementById('continue-game-btn');
-        continueBtn.style.display = 'block';
-
-
-        // Adicionar evento de clique
-        continueBtn.addEventListener('click', function () {
-            titleScreen.style.display = 'none';
-            continueGame();
-        });
+            // Adicionar evento de clique
+            continueBtn.addEventListener('click', function () {
+                titleScreen.style.display = 'none';
+                continueGame();
+            });
+        }
     }
 });
 

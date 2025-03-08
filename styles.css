@@ -250,6 +250,7 @@ body {
   bottom: 30px;
   left: 35%;
   transform: translateX(-50%);
+  background: radial-gradient(circle at 30% 30%, #00B0FF 10%, #0091EA 50%, #01579B 100%);
   border-radius: 50%; /* Default shape is circle */
   transition: all 0.5s ease, background 0.5s ease, box-shadow 0.5s ease, border 0.5s ease;
   z-index: 10;
@@ -555,7 +556,6 @@ body {
   left: 0;
   right: 0;
   height: 20px;
-  background: linear-gradient(to top, rgba(20, 20, 30, 0.95), rgba(20, 20, 30, 0));
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.3s;
