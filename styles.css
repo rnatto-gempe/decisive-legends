@@ -357,7 +357,7 @@ body {
 
 button {
   padding: 10px 12px;
-  background: linear-gradient(to bottom, #2a88c5, #1976d2);
+  background: linear-gradient(to bottom, #2a88c5, #165783);
   color: white;
   border: none;
   border-radius: 6px;
@@ -425,7 +425,8 @@ button:active,
 
 .option-positive {
   color: #4caf50;
-  text-shadow: 0 0 3px rgba(76, 175, 80, 0.5);
+  font-weight: 900;
+  text-shadow: 0 0 3px rgba(23, 18, 18, 0.5);
 }
 
 .option-negative {
