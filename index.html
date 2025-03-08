@@ -27,6 +27,8 @@
       justify-content: center;
       align-items: center;
       overflow: hidden;
+      padding: 20px;
+      box-sizing: border-box;
     }
 
     #particles-container {
@@ -46,9 +48,9 @@
     }
 
     #title {
-      font-size: 3.5rem;
+      font-size: clamp(2rem, 6vw, 3.5rem);
       font-weight: bold;
-      margin-bottom: 2rem;
+      margin-bottom: clamp(1rem, 4vh, 2rem);
       text-align: center;
       color: #fff;
       text-shadow: 0 0 20px #2196F3, 0 0 30px #2196F3, 0 0 40px #2196F3;
@@ -56,40 +58,82 @@
       opacity: 0;
       transform: translateY(30px);
       animation: fadeInUp 1s ease forwards 0.5s;
+      width: 100%;
     }
 
     #subtitle {
-      font-size: 1.5rem;
-      margin-bottom: 3rem;
+      font-size: clamp(1rem, 3vw, 1.5rem);
+      margin-bottom: clamp(1.5rem, 5vh, 3rem);
       text-align: center;
       color: #ccc;
       z-index: 2;
       opacity: 0;
       transform: translateY(30px);
       animation: fadeInUp 1s ease forwards 1s;
+      width: 90%;
+      max-width: 600px;
     }
 
-    #start-title-btn, #continue-game-btn {
-      padding: 12px 30px;
+    .button-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      z-index: 10;
+      width: 100%;
+      max-width: 300px;
+      align-items: center;
+    }
+
+    #start-title-btn, #continue-game-btn, #preview-bosses-btn {
+      padding: clamp(8px, 2vh, 12px) clamp(15px, 5vw, 30px);
       background-color: #2196F3;
       color: white;
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      font-size: 1.2rem;
+      font-size: clamp(0.9rem, 3vw, 1.2rem);
       font-weight: 500;
       transition: all 0.3s ease;
       z-index: 2;
       opacity: 0;
       transform: translateY(30px);
-      animation: fadeInUp 1s ease forwards 1.5s;
+      width: 100%;
+      max-width: 250px;
+      text-align: center;
       box-shadow: 0 0 15px rgba(33, 150, 243, 0.7);
+    }
+
+    #start-title-btn {
+      animation: fadeInUp 1s ease forwards 1.5s;
+    }
+
+    #continue-game-btn {
+      display: none;
+      animation: fadeInUp 1s ease forwards 1.7s;
+    }
+
+    #preview-bosses-btn {
+      background-color: #9C27B0;
+      box-shadow: 0 0 15px rgba(156, 39, 176, 0.7);
+      animation: fadeInUp 1s ease forwards 1.8s;
     }
 
     #start-title-btn:hover {
       background-color: #1976D2;
       transform: translateY(-5px);
       box-shadow: 0 0 30px rgba(33, 150, 243, 0.9);
+    }
+
+    .continue-game-btn:hover {
+      background-color: #388E3C;
+      transform: translateY(-5px);
+      box-shadow: 0 0 30px rgba(76, 175, 80, 0.9);
+    }
+
+    #preview-bosses-btn:hover {
+      background-color: #7B1FA2;
+      transform: translateY(-5px);
+      box-shadow: 0 0 30px rgba(156, 39, 176, 0.9);
     }
 
     .floating {
@@ -130,6 +174,9 @@
       opacity: 0.7;
       box-shadow: 0 0 15px rgba(33, 150, 243, 0.3);
       animation: rotate 20s linear infinite;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
 
     .magical-circle::before {
@@ -159,7 +206,7 @@
     .rune {
       position: absolute;
       color: rgba(33, 150, 243, 0.8);
-      font-size: 24px;
+      font-size: clamp(16px, 4vw, 24px);
       font-weight: bold;
       text-shadow: 0 0 5px #2196F3;
       transform-origin: center;
@@ -254,9 +301,11 @@
 
     </p>
 
-    <button id="start-title-btn">INICIAR JORNADA</button>
-    <button id="continue-game-btn">CONTINUAR JORNADA</button>
-    <button id="preview-bosses-btn">VER BOSSES</button>
+    <div class="button-container">
+      <button id="start-title-btn">INICIAR JORNADA</button>
+      <button id="continue-game-btn">CONTINUAR JORNADA</button>
+      <button id="preview-bosses-btn">VER BOSSES</button>
+    </div>
 
   </div>
 
@@ -616,15 +665,24 @@
       // Criação de partículas
       const particlesContainer = document.getElementById('particles-container');
       const numParticles = 150;
-      for (let i = 0; i < numParticles; i++) {
+      
+      // Função para ajustar número de partículas com base no tamanho da tela
+      function getResponsiveParticleCount() {
+        const width = window.innerWidth;
+        if (width < 768) return 80;  // Menos partículas para dispositivos móveis
+        if (width < 1200) return 120; // Médio para tablets
+        return 150; // Máximo para desktops
+      }
+      
+      for (let i = 0; i < getResponsiveParticleCount(); i++) {
         createParticle();
       }
 
       function createParticle() {
         const particle = document.createElement('div');
         particle.className = 'particle';
-        // Tamanho aleatório
-        const size = Math.random() * 5 + 1;
+        // Tamanho responsivo com base no tamanho da tela
+        const size = Math.random() * (window.innerWidth < 768 ? 3 : 5) + 1;
         particle.style.width = `${size}px`;
         particle.style.height = `${size}px`;
         // Posição inicial aleatória
@@ -632,9 +690,10 @@
         const posY = Math.random() * window.innerHeight;
         particle.style.left = `${posX}px`;
         particle.style.top = `${posY}px`;
-        // Velocidade aleatória
-        const speedX = (Math.random() - 0.5) * 1;
-        const speedY = (Math.random() - 0.5) * 1;
+        // Velocidade aleatória - mais lento em dispositivos móveis
+        const speedFactor = window.innerWidth < 768 ? 0.7 : 1;
+        const speedX = (Math.random() - 0.5) * speedFactor;
+        const speedY = (Math.random() - 0.5) * speedFactor;
         // Opacidade aleatória
         particle.style.opacity = Math.random() * 0.5 + 0.3;
         particlesContainer.appendChild(particle);
@@ -654,22 +713,27 @@
         }
         moveParticle();
       }
+      
       // Criação de círculos mágicos
       createMagicalCircles();
 
       function createMagicalCircles() {
         const titleScreen = document.getElementById('title-screen');
         const numCircles = 3;
+        
+        // Função para calcular tamanho responsivo dos círculos
+        function getResponsiveCircleSize(index) {
+          const baseSize = Math.min(window.innerWidth, window.innerHeight) * 0.6;
+          return baseSize + index * (baseSize * 0.15);
+        }
+        
         for (let i = 0; i < numCircles; i++) {
           const circle = document.createElement('div');
           circle.className = 'magical-circle';
-          // Tamanho do círculo
-          const size = 300 + i * 100;
+          // Tamanho responsivo do círculo
+          const size = getResponsiveCircleSize(i);
           circle.style.width = `${size}px`;
           circle.style.height = `${size}px`;
-          // Posicionar no centro
-          circle.style.top = '50%';
-          circle.style.left = '50%';
           // Velocidade de rotação diferente para cada círculo
           const duration = 20 + i * 10;
           circle.style.animationDuration = `${duration}s`;
@@ -702,6 +766,17 @@
           circle.appendChild(rune);
         }
       }
+      
+      // Redimensionamento responsivo quando a janela é redimensionada
+      window.addEventListener('resize', function() {
+        // Limpar círculos existentes
+        const existingCircles = document.querySelectorAll('.magical-circle');
+        existingCircles.forEach(circle => circle.remove());
+        
+        // Recriar círculos com base no novo tamanho da tela
+        createMagicalCircles();
+      });
+      
       // Botão para iniciar o jogo
       document.getElementById('start-title-btn').addEventListener('click', function() {
         const titleScreen = document.getElementById('title-screen');

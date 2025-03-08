@@ -16,6 +16,8 @@ body {
   overflow: hidden;
   position: relative;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Cabeçalho com Estatísticas - Estilo de HUD de jogo */
@@ -111,13 +113,15 @@ body {
 /* Área do Jogo - Visual mais imersivo */
 #game-area {
   background: linear-gradient(to bottom, #5495c2 0%, #87ceeb 40%, #a6d8f1 100%);
-  height: 40vh;
+  height: 35vh;
+  min-height: 150px;
   position: relative;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   transition: transform 0.05s;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
 }
 
 #background {
@@ -242,16 +246,250 @@ body {
 #player {
   width: 40px;
   height: 40px;
-  background: radial-gradient(circle at 30% 30%, #5ab5ff 10%, #2196f3 60%, #0d6ecc 100%);
   position: absolute;
   bottom: 30px;
   left: 35%;
   transform: translateX(-50%);
-  border-radius: 50%;
-  transition: all 0.3s ease;
+  border-radius: 50%; /* Default shape is circle */
+  transition: all 0.5s ease, background 0.5s ease, box-shadow 0.5s ease, border 0.5s ease;
   z-index: 10;
-  box-shadow: 0 0 15px rgba(33, 150, 243, 0.9), inset 0 0 8px rgba(255, 255, 255, 0.5);
   border: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+/* Health-based appearances */
+.player-high-health {
+  background: radial-gradient(circle at 30% 30%, #5ab5ff 10%, #2196f3 60%, #0d6ecc 100%);
+  box-shadow: 0 0 15px rgba(33, 150, 243, 0.9), inset 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+.player-medium-health {
+  background: radial-gradient(circle at 30% 30%, #5ab5ff 10%, #1976d2 60%, #0d47a1 100%);
+  box-shadow: 0 0 12px rgba(25, 118, 210, 0.8), inset 0 0 6px rgba(255, 255, 255, 0.4);
+}
+
+.player-low-health {
+  background: radial-gradient(circle at 30% 30%, #ff7043 10%, #e64a19 60%, #bf360c 100%);
+  box-shadow: 0 0 15px rgba(230, 74, 25, 0.9), inset 0 0 8px rgba(255, 100, 80, 0.5);
+  animation: pulseWarning 1.5s infinite alternate;
+}
+
+@keyframes pulseWarning {
+  0% {
+    box-shadow: 0 0 15px rgba(230, 74, 25, 0.9), inset 0 0 8px rgba(255, 100, 80, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.9), inset 0 0 10px rgba(255, 80, 80, 0.6);
+  }
+}
+
+/* Mana-based appearances - affects the inner glow/effects */
+.player-high-mana.player-high-health, 
+.player-high-mana.player-medium-health {
+  box-shadow: 0 0 15px rgba(33, 150, 243, 0.9), 0 0 25px rgba(33, 150, 243, 0.5), inset 0 0 12px rgba(100, 181, 246, 0.8);
+}
+
+.player-high-mana.player-low-health {
+  box-shadow: 0 0 15px rgba(230, 74, 25, 0.9), 0 0 25px rgba(33, 150, 243, 0.5), inset 0 0 12px rgba(255, 100, 80, 0.5);
+}
+
+.player-medium-mana {
+  /* Subtle mana effects */
+  box-shadow: 0 0 15px currentColor, inset 0 0 8px rgba(180, 180, 255, 0.5);
+}
+
+.player-low-mana {
+  /* Reduced mana effects */
+  opacity: 0.9;
+}
+
+/* Attack-based appearances - affects the intensity of effects */
+.player-high-attack:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: radial-gradient(circle at center, transparent 40%, rgba(255, 80, 80, 0.2) 80%, rgba(255, 80, 80, 0.3) 100%);
+  border-radius: inherit;
+  z-index: -1;
+  animation: pulseAttack 2s infinite alternate;
+}
+
+@keyframes pulseAttack {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 0.3;
+  }
+}
+
+.player-medium-attack {
+  filter: contrast(1.1) saturate(1.2);
+}
+
+.player-high-attack.player-high-mana:after {
+  background: radial-gradient(circle at center, transparent 40%, rgba(255, 80, 255, 0.2) 80%, rgba(255, 80, 255, 0.3) 100%);
+}
+
+/* Defense-based appearances - affects the border */
+.player-high-defense {
+  border: 4px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 15px currentColor, 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.player-medium-defense {
+  border: 3px solid rgba(255, 255, 255, 0.6);
+}
+
+.player-low-defense {
+  border: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+/* Lifesteal effects */
+.player-has-lifesteal {
+  background-image: radial-gradient(circle at 30% 30%, 
+    currentColor 10%, 
+    rgba(128, 0, 128, 0.7) 60%, 
+    rgba(80, 0, 80, 0.9) 100%);
+}
+
+.player-high-lifesteal {
+  animation: lifestealPulse 2s infinite alternate;
+}
+
+@keyframes lifestealPulse {
+  0% {
+    filter: hue-rotate(0deg) brightness(1);
+  }
+  100% {
+    filter: hue-rotate(30deg) brightness(1.2);
+  }
+}
+
+/* Shape variations based on stats combination */
+.player-shape-circle {
+  border-radius: 50%;
+}
+
+.player-shape-square {
+  border-radius: 15%;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.player-shape-square:after {
+  transform: rotate(-45deg);
+}
+
+.player-shape-diamond {
+  border-radius: 10%;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.player-shape-diamond:after {
+  transform: rotate(-45deg);
+}
+
+.player-shape-hex {
+  -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  border-radius: 0;
+}
+
+/* Level-based tier appearances */
+.player-tier-1 {
+  /* Basic player - default styles apply */
+}
+
+.player-tier-2 {
+  transform: translateX(-50%) scale(1.1);
+  filter: brightness(1.1);
+}
+
+.player-tier-3 {
+  transform: translateX(-50%) scale(1.15);
+  filter: brightness(1.15) contrast(1.1);
+}
+
+.player-tier-4 {
+  transform: translateX(-50%) scale(1.2);
+  filter: brightness(1.2) contrast(1.15);
+}
+
+.player-tier-4:before {
+  content: '';
+  position: absolute;
+  width: 120%;
+  height: 120%;
+  top: -10%;
+  left: -10%;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: inherit;
+  animation: rotateBorder 6s linear infinite;
+}
+
+.player-tier-5 {
+  transform: translateX(-50%) scale(1.25);
+  filter: brightness(1.3) contrast(1.2);
+}
+
+.player-tier-5:before {
+  content: '';
+  position: absolute;
+  width: 130%;
+  height: 130%;
+  top: -15%;
+  left: -15%;
+  background: transparent;
+  border: 2px solid rgba(255, 215, 0, 0.3);
+  border-radius: inherit;
+  animation: rotateBorder 4s linear infinite;
+}
+
+.player-tier-5:after {
+  content: '';
+  position: absolute;
+  width: 150%;
+  height: 150%;
+  top: -25%;
+  left: -25%;
+  background: transparent;
+  border: 1px solid rgba(255, 215, 0, 0.1);
+  border-radius: inherit;
+  animation: rotateBorder 8s linear infinite reverse;
+}
+
+@keyframes rotateBorder {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Special combinations */
+.player-high-attack.player-high-defense {
+  box-shadow: 0 0 15px currentColor, 0 0 25px rgba(255, 215, 0, 0.5);
+}
+
+.player-high-health.player-high-mana.player-high-attack.player-high-defense {
+  animation: powerPulse 3s infinite alternate;
+}
+
+@keyframes powerPulse {
+  0% {
+    box-shadow: 0 0 15px currentColor, 0 0 25px rgba(255, 255, 255, 0.5);
+    filter: brightness(1) contrast(1);
+  }
+  100% {
+    box-shadow: 0 0 20px currentColor, 0 0 35px rgba(255, 215, 0, 0.7);
+    filter: brightness(1.2) contrast(1.1);
+  }
 }
 
 #enemy {
@@ -279,7 +517,8 @@ body {
 
 /* Área de Cartões - Estilo mais dinâmico */
 #cards-area {
-  height: 40vh;
+  height: calc(55vh - 80px);
+  min-height: 200px;
   background: linear-gradient(to bottom, rgba(30, 30, 40, 0.85), rgba(20, 20, 30, 0.95));
   margin-top: 10px;
   border-radius: 12px;
@@ -289,6 +528,8 @@ body {
   scrollbar-width: thin;
   scrollbar-color: #64b5f6 #1e1e1e;
   border: 1px solid rgba(100, 181, 246, 0.3);
+  flex-grow: 1;
+  position: relative;
 }
 
 #cards-area::-webkit-scrollbar {
@@ -306,6 +547,24 @@ body {
   border: 2px solid #1e1e1e;
 }
 
+/* Scroll indicator for cards area */
+#cards-area::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background: linear-gradient(to top, rgba(20, 20, 30, 0.95), rgba(20, 20, 30, 0));
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+#cards-area.has-overflow::after {
+  opacity: 1;
+}
+
 .card {
   background: linear-gradient(135deg, rgba(45, 45, 55, 0.9), rgba(35, 35, 45, 0.9));
   border-left: 4px solid #64b5f6;
@@ -316,12 +575,22 @@ body {
   transition: all 0.3s ease, opacity 0.3s, transform 0.3s;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  word-break: break-word;
 }
 
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3), 0 0 15px rgba(100, 181, 246, 0.3);
-  background: linear-gradient(135deg, rgba(50, 50, 60, 0.9), rgba(40, 40, 50, 0.9));
+/* New card highlight animation */
+.card-new {
+  animation: highlightCard 2s ease-out;
+}
+
+@keyframes highlightCard {
+  0%, 100% {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(100, 181, 246, 0.7);
+  }
 }
 
 .boss-card {
@@ -1119,12 +1388,71 @@ button:active,
   }
 }
 
+/* Better responsiveness for smaller screens */
+@media (max-height: 600px) {
+  #header {
+    padding: 5px;
+    margin-bottom: 5px;
+  }
+  
+  #game-area {
+    height: 30vh;
+    min-height: 120px;
+  }
+  
+  #cards-area {
+    height: calc(60vh - 80px);
+  }
+  
+  .card {
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .card-options {
+    gap: 5px;
+    margin-top: 8px;
+  }
+  
+  button {
+    padding: 8px 10px;
+    margin: 10px 5px;
+  }
+}
 
+/* "New content" indicator */
+.new-content-indicator {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(100, 181, 246, 0.8);
+  color: white;
+  padding: 8px 15px;
+  border-radius: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  z-index: 100;
+  display: none;
+  animation: pulse 1.5s infinite alternate;
+}
+
+.new-content-indicator.visible {
+  display: block;
+}
+
+@keyframes pulse {
+  0% {
+    transform: translateX(-50%) scale(1);
+  }
+  100% {
+    transform: translateX(-50%) scale(1.1);
+  }
+}
 
 /* BOSSES */
 
 /* Estilos para cada boss específico por nome */
-
 
 /* Estilos para cada boss específico por nome */
 
